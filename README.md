@@ -42,7 +42,7 @@
 | Massini Arch, Maximiliano  | 94288  |
 | Galanti, Matías            | 86624  |
 | Brageda, Rocío             | 93868  |
-| Gonzáles, Alessandro       | 92950  |
+| González, Alessandro       | 92950  |
 
 ## Estructura del repositorio
 
