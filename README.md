@@ -107,14 +107,13 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 
 ## Listado de etiquetas en las reglas de nombrado
 
-| Etiqueta            | Definición                                                                                                                                                                                                                                           |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `<autor>`           | Indica el apellido del autor del material, escrito en minúscula. Si hay varios autores, solo se utiliza el primero. Ejemplo: “Ingeniería de Software — Ian Somerville” se nombra como **somerville**.                                                 |
-| `<aaaa>`            | Indica el año de publicación del material, en formato de cuatro dígitos. Ejemplo: **2025**.                                                                                                                                                          |
-| `<nn>`              | <nn>: Indica el número asignado por la cátedra al material o tema, utilizando dos dígitos. En caso de existir varios materiales asociados al mismo número, se agrega un segundo identificador correlativo de dos dígitos separado por guion bajo. Ejemplo: **09_01**, **09_02**,**09_03**.
-                                                                                          | 
-| `<nombre_material>` | Indica el nombre del material proporcionado por la cátedra, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Ingeniería de Software” se nombra como **ingenieria_de_software**.                                                 |
-| `<nombre_tema>`     | Indica el tema específico del trabajo, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Design Thinking” se nombra como **design_thinking**.                                                                                    |
-| `<nombre_tipo>`     | Indica el tipo de trabajo entregado, en minúscula. Ejemplo: **informe**, **gráfico**, **tabla**, **presentación**.                                                                                                                                   |
-| `<ext>`             | Indica la extensión del archivo entregado. Ejemplo: **.docx**, **.xlsx**, **.pdf**.                                                                                                                                                                  |
-| `<hito>`            | Indica el momento del proyecto al que se asocia la línea base. Ejemplo: Si se define después de la corrección del TP4, se nombra como **post_correcciones_tp4**.                                                                                     |
+| Etiqueta | Definición |
+|---|---|
+| `<autor>` | Indica el apellido del autor del material, escrito en minúscula. Si hay varios autores, solo se utiliza el primero. Ejemplo: “Ingeniería de Software — Ian Somerville” se nombra como **somerville**. |
+| `<aaaa>` | Indica el año de publicación del material, en formato de cuatro dígitos. Ejemplo: **2025**. |
+| `<nn>` | Indica el número asignado por la cátedra al material o tema, utilizando dos dígitos. En caso de existir varios materiales asociados al mismo número, se agrega un segundo identificador correlativo de dos dígitos separado por guion bajo. Ejemplo: **09_01, 09_02, 09_03**. |
+| `<nombre_material>` | Indica el nombre del material proporcionado por la cátedra, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Ingeniería de Software” se nombra como **ingenieria_de_software**. |
+| `<nombre_tema>` | Indica el tema específico del trabajo, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Design Thinking” se nombra como **design_thinking**. |
+| `<nombre_tipo>` | Indica el tipo de trabajo entregado, en minúscula. Ejemplo: **informe**, **grafico**, **tabla**, **presentacion**. |
+| `<ext>` | Indica la extensión del archivo entregado. Ejemplo: **.docx**, **.xlsx**, **.pdf**. |
+| `<hito>` | Indica el momento del proyecto al que se asocia la línea base. Ejemplo: si se define después de la corrección del TP4, se nombra como **post_correcciones_tp4**. |
