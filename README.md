@@ -43,6 +43,7 @@
 | Galanti, Matías            | 86624  |
 | Brageda, Rocío             | 93868  |
 | González, Alessandro       | 92950  |
+| Pedernera, Nicolás         | 96746  |
 
 ## Estructura del repositorio
 
