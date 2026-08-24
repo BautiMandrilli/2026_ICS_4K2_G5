@@ -93,7 +93,7 @@ A medida que vayamos avanzando en el transcurso de la materia iremos publicando 
 La línea base del proyecto se definirá una vez se entreguen los trabajos prácticos evaluables.
 Esto significa que la línea se establecerá antes de la finalización de la fecha de entrega de cada trabajo práctico evaluable, por lo que las correcciones o ajustes posteriores identificados en cada trabajo solo podrán implementarse en la línea base de la entrega siguiente, asegurando que cada línea base permanezca estable y controlada.
 
-**Regla de nombrado de la línea base:**  `linea_base_tp<nn>`
+**Regla de nombrado de la línea base:** `linea_base_tp<nn>` o, cuando se quiera indicar un hito particular del proyecto, `linea_base_<hito>` (por ejemplo: `linea_base_post_correcciones_tp4`).
 
 **Comandos para marcar la línea base:**
 
@@ -118,3 +118,4 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 | `<nombre_tema>` | Indica el tema específico del trabajo, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Design Thinking” se nombra como **design_thinking**. |
 | `<nombre_tipo>` | Indica el tipo de trabajo entregado, en minúscula. Ejemplo: **informe**, **grafico**, **tabla**, **presentacion**. |
 | `<ext>` | Indica la extensión del archivo entregado. Ejemplo: **.docx**, **.xlsx**, **.pdf**. |
+| `<hito>` | Indica el momento del proyecto al que se asocia la línea base. Se utiliza en la regla de nombrado de líneas base. Ejemplo: si se define después de la corrección del TP4, se nombra como **post_correcciones_tp4**. |
