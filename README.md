@@ -19,10 +19,10 @@
 
 | Apellido y nombre   | Rol                            |
 |---------------------|--------------------------------|
-| Meles, Judith       | Adjunto                        |   
-| Massano, Cecilia    | Auxiliar de trabajos prácticos |  
-| Pomenich, Marcos    | Ayudante alumno                |  
-| Izaguirre, Ezequiel | Ayudante alumno                |   
+| Meles, Judith       | Adjunto                        |
+| Massano, Cecilia    | Auxiliar de trabajos prácticos |
+| Pomenich, Marcos    | Ayudante alumno                |
+| Izaguirre, Ezequiel | Ayudante alumno                |
 
 **Número de grupo:** Grupo 5
 
@@ -41,7 +41,6 @@
 | Tapia, Belén               | 87368  |
 | Massini Arch, Maximiliano  | 94288  |
 | Galanti, Matías            | 86624  |
-| Brageda, Rocío             | 93868  |
 | González, Alessandro       | 92950  |
 | Pedernera, Nicolás         | 96746  |
 
@@ -56,6 +55,7 @@ Contiene material de estudio y referencia teórica. Incluye:
   - **`pensamiento_agil`**: Material sobre metodologías ágiles.  
   - **`scm`**: Material sobre gestión de configuración de software.  
   - **`lean_kanban`**: Material sobre Lean y Kanban.  
+  - **`tdd`**: Material sobre Test Driven Development.  
 - **`presentaciones`**: Presentaciones de clase en formato digital.  
 
 ### `practico`
@@ -81,10 +81,11 @@ A medida que vayamos avanzando en el transcurso de la materia iremos publicando 
 | Material bibliográfico sobre pensamiento ágil                     | `<autor>_<aaaa>_<nombre_material>.<ext>`           | [Bibliografía — Pensamiento ágil](teorico/bibliografia/pensamiento_agil)                                                                  |
 | Material bibliográfico sobre SCM                                  | `<autor>_<aaaa>_<nombre_material>.<ext>`           | [Bibliografía — SCM](teorico/bibliografia/scm)                                                                                            |
 | Material bibliográfico sobre Lean y Kanban                        | `<autor>_<aaaa>_<nombre_material>.<ext>`           | [Bibliografía — Lean y Kanban](teorico/bibliografia/lean_kanban)                                                                          |
+| Material bibliográfico sobre TDD                                  | `<autor>_<aaaa>_<nombre_material>.<ext>`           | [Bibliografía — TDD](teorico/bibliografia/tdd)                                                                                            |
 | Presentación de clase                                             | `<aaaa>_<nn>_<nombre_material>.<ext>`              | [Presentaciones](teorico/presentaciones)                                                                                                  |
 | Template para prácticos o parciales                               | `<aaaa>_<nombre_material>.<ext>`                   | [Templates](practico/templates)                                                                                                           |
 | Guía de ejercicios o trabajos                                     | `<aaaa>_<nombre_material>.<ext>`                   | [Guías](practico/guias)                                                                                                                   |
-| Trabajo de investigación                                          | `tp<nn>_4k2_g5_<nombre_tema>_<nombre_tipo>.<ext>` | [Trabajos de investigación](entregas/trabajos_investigacion)                                                                              |
+| Trabajo de investigación                                          | `ti<nn>_4k2_g5_<nombre_tema>_<nombre_tipo>.<ext>` | [Trabajos de investigación](entregas/trabajos_investigacion)                                                                              |
 | Trabajo práctico                                                  | `tp<nn>_4k2_g5_<nombre_tema>_<nombre_tipo>.<ext>` | [Trabajos prácticos](entregas/trabajos_practicos)                                                                                         |
 
 ## Definición de línea base
@@ -117,4 +118,3 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 | `<nombre_tema>` | Indica el tema específico del trabajo, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Design Thinking” se nombra como **design_thinking**. |
 | `<nombre_tipo>` | Indica el tipo de trabajo entregado, en minúscula. Ejemplo: **informe**, **grafico**, **tabla**, **presentacion**. |
 | `<ext>` | Indica la extensión del archivo entregado. Ejemplo: **.docx**, **.xlsx**, **.pdf**. |
-| `<hito>` | Indica el momento del proyecto al que se asocia la línea base. Ejemplo: si se define después de la corrección del TP4, se nombra como **post_correcciones_tp4**. |
