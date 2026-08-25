@@ -104,6 +104,7 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 
 | Fecha de Definición | Autor de la Definición | Descripción de la Línea Base |
 |--------------------|-----------------------|-----------------------------|
+| 2026-08-25 | Grupo 5 | Línea base del TP04: informe de SCM y estructura del repositorio. |
 
 
 
