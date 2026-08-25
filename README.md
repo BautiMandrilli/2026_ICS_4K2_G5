@@ -30,19 +30,19 @@
 
 | Apellido y nombre          | Legajo |
 |----------------------------|--------|
-| Maldonado, Leandro         | 74553  |
 | Baolino, Emily Belén       | 400850 |
+| Brageda, Rocío             | 93868  |
+| Galanti, Matías            | 86624  |
+| Galindo, Facundo           | 80835  |
+| González, Alessandro       | 92950  |
+| Maldonado, Leandro         | 74553  |
+| Mandrilli, Bautista        | 89654  |
+| Massini Arch, Maximiliano  | 94288  |
+| Pedernera, Nicolás         | 96746  |
+| Saggiorato, Gina           | 95794  |
+| Tapia, Belén               | 87368  |
 | Villane, Ignacio           | 62687  |
 | Zitelli, Gabriel Luciano   | 82187  |
-| Mandrilli, Bautista        | 89654  |
-| Galindo, Facundo           | 80835  |
-| Saggiorato, Gina           | 95794  |
-| Brageda, Rocío             | 93868  |
-| Tapia, Belén               | 87368  |
-| Massini Arch, Maximiliano  | 94288  |
-| Galanti, Matías            | 86624  |
-| González, Alessandro       | 92950  |
-| Pedernera, Nicolás         | 96746  |
 
 ## Estructura del repositorio
 
