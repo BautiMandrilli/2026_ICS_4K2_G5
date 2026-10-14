@@ -4,6 +4,7 @@ import pytest
 
 from app.dominio.servicios.reglas_compra import (
 	validar_cantidad,
+	validar_edades,
 	validar_fecha_visita,
 	validar_forma_pago,
 	validar_tipo_pase,
@@ -58,3 +59,23 @@ def test_rechaza_forma_de_pago_invalida():
 	# Criterio de aceptacion: debe seleccionarse efectivo o tarjeta.
 	with pytest.raises(ValueError):
 		validar_forma_pago("transferencia")
+
+
+def test_rechaza_compra_sin_edades():
+	# Criterio de aceptacion: debe indicarse la edad de cada visitante.
+	with pytest.raises(ValueError):
+		validar_edades(1, [])
+
+
+def test_rechaza_menos_edades_que_entradas():
+	with pytest.raises(ValueError):
+		validar_edades(3, [20, 30])
+
+
+def test_rechaza_mas_edades_que_entradas():
+	with pytest.raises(ValueError):
+		validar_edades(1, [20, 30])
+
+
+def test_permite_una_edad_por_entrada():
+	validar_edades(2, [20, 30])
