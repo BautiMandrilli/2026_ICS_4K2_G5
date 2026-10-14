@@ -23,6 +23,15 @@ def test_rechaza_cero_entradas():
 		validar_cantidad(0)
 
 
+def test_permite_exactamente_diez_entradas():
+	validar_cantidad(10)
+
+
+def test_rechaza_cantidad_negativa():
+	with pytest.raises(ValueError):
+		validar_cantidad(-1)
+
+
 def test_rechaza_fecha_con_parque_cerrado():
 	# Criterio de aceptacion: la visita debe ser en un dia de apertura.
 	hoy = date.today()
@@ -39,6 +48,19 @@ def test_rechaza_fecha_anterior_al_dia_actual():
 
 	with pytest.raises(ValueError):
 		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, hoy)
+
+
+def test_permite_fecha_actual_si_el_parque_esta_abierto():
+	hoy = date.today()
+
+	validar_fecha_visita(hoy, {hoy}, hoy)
+
+
+def test_permite_fecha_futura_si_el_parque_esta_abierto():
+	hoy = date.today()
+	fecha_futura = hoy + timedelta(days=2)
+
+	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, hoy)
 
 
 def test_rechaza_tipo_de_pase_invalido():
@@ -59,6 +81,24 @@ def test_rechaza_forma_de_pago_invalida():
 	# Criterio de aceptacion: debe seleccionarse efectivo o tarjeta.
 	with pytest.raises(ValueError):
 		validar_forma_pago("transferencia")
+
+
+def test_permite_pago_en_efectivo():
+	validar_forma_pago("efectivo")
+
+
+def test_permite_pago_con_tarjeta():
+	validar_forma_pago("tarjeta")
+
+
+def test_rechaza_forma_de_pago_vacia():
+	with pytest.raises(ValueError):
+		validar_forma_pago("")
+
+
+def test_rechaza_tipo_de_pase_vacio():
+	with pytest.raises(ValueError):
+		validar_tipo_pase("")
 
 
 def test_rechaza_compra_sin_edades():
