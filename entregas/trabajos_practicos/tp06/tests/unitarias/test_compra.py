@@ -2,7 +2,12 @@ from datetime import date, timedelta
 
 import pytest
 
-from app.dominio.servicios.reglas_compra import validar_cantidad, validar_fecha_visita
+from app.dominio.servicios.reglas_compra import (
+	validar_cantidad,
+	validar_fecha_visita,
+	validar_forma_pago,
+	validar_tipo_pase,
+)
 
 
 def test_rechaza_mas_de_diez_entradas():
@@ -33,3 +38,23 @@ def test_rechaza_fecha_anterior_al_dia_actual():
 
 	with pytest.raises(ValueError):
 		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, hoy)
+
+
+def test_rechaza_tipo_de_pase_invalido():
+	# Criterio de aceptacion: el pase debe ser regular o VIP.
+	with pytest.raises(ValueError):
+		validar_tipo_pase("premium")
+
+
+def test_permite_tipo_de_pase_regular():
+	validar_tipo_pase("regular")
+
+
+def test_permite_tipo_de_pase_vip():
+	validar_tipo_pase("vip")
+
+
+def test_rechaza_forma_de_pago_invalida():
+	# Criterio de aceptacion: debe seleccionarse efectivo o tarjeta.
+	with pytest.raises(ValueError):
+		validar_forma_pago("transferencia")

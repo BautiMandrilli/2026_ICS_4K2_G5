@@ -19,3 +19,15 @@ def validar_fecha_visita(
 		raise ValueError("La fecha no puede ser anterior al dia actual")
 	if fecha_visita not in dias_abiertos:
 		raise ValueError("El parque esta cerrado en la fecha seleccionada")
+
+
+def validar_tipo_pase(tipo_de_pase: str) -> None:
+	"""Valida que el pase sea regular o VIP."""
+	if tipo_de_pase not in {"regular", "vip"}:
+		raise ValueError("El tipo de pase no es valido")
+
+
+def validar_forma_pago(forma_de_pago: str) -> None:
+	"""Valida que el pago sea en efectivo o con tarjeta."""
+	if forma_de_pago not in {"efectivo", "tarjeta"}:
+		raise ValueError("La forma de pago no es valida")
