@@ -12,7 +12,10 @@ def validar_cantidad(cantidad: int) -> None:
 def validar_fecha_visita(
 	fecha_visita: date,
 	dias_abiertos: set[date],
+	fecha_actual: date | None = None,
 ) -> None:
-	"""Valida que la fecha elegida corresponda a un dia de apertura."""
+	"""Valida que la fecha sea actual o futura y corresponda a una apertura."""
+	if fecha_actual is not None and fecha_visita < fecha_actual:
+		raise ValueError("La fecha no puede ser anterior al dia actual")
 	if fecha_visita not in dias_abiertos:
 		raise ValueError("El parque esta cerrado en la fecha seleccionada")

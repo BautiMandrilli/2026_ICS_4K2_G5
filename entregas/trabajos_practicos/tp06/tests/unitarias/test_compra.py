@@ -24,3 +24,12 @@ def test_rechaza_fecha_con_parque_cerrado():
 
 	with pytest.raises(ValueError):
 		validar_fecha_visita(fecha_cerrada, {hoy})
+
+
+def test_rechaza_fecha_anterior_al_dia_actual():
+	# Criterio de aceptacion: la visita puede ser hoy o en una fecha futura.
+	hoy = date.today()
+	fecha_anterior = hoy - timedelta(days=1)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, hoy)
