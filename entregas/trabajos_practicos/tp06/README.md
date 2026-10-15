@@ -17,7 +17,7 @@ tp06/
 │   ├── infraestructura/               # detalles tecnicos externos
 │   │   ├── base_de_datos/              # persistencia de compras y usuarios
 │   │   ├── pagos/                      # Mercado Pago simulado
-│   │   └── notificaciones/             # email simulado
+│   │   └── notificaciones/             # correo SMTP con Gmail
 │   └── interfaces/                     # entrada y salida de la aplicacion
 │       ├── estaticos/                  # CSS, JavaScript e imagenes
 │       ├── plantillas/                 # HTML, Jinja2 y HTMX
@@ -101,6 +101,42 @@ python -m pip install -r requirements.txt
 La opcion `-r` indica que pip debe leer e instalar todas las librerias
 enumeradas en `requirements.txt`.
 
+### 4. Configurar los correos con Gmail
+
+Desde la carpeta `tp06`, copiar el ejemplo (si ya existe `app/.env`, completar
+ese archivo conservando su contenido):
+
+```powershell
+Copy-Item app/.env.example app/.env
+```
+
+En `app/.env`, completar `SMTP_USER` con la cuenta Gmail que enviara los correos
+y `SMTP_PASSWORD` con su **contraseña de aplicacion de Google**, sin espacios.
+No se usa una API key ni la contraseña habitual de la cuenta.
+Para generar esta credencial hay que activar la verificacion en dos pasos y
+crear una contraseña de aplicacion en
+[la cuenta de Google](https://myaccount.google.com/apppasswords).
+Consultar tambien la [ayuda de Gmail](https://support.google.com/mail/answer/7104828?hl=es).
+Si la cuenta no ofrece esta opcion, revisar las restricciones de su administrador.
+
+El ejemplo deja configurado `smtp.gmail.com`, puerto `587`, STARTTLS con
+certificados verificados y timeout de `10` segundos. `SMTP_FROM_NAME` permite
+cambiar el nombre visible; el remitente siempre es `SMTP_USER`.
+La aplicacion busca el `.env` dentro de `app`, independientemente del directorio
+de ejecucion. Las variables del sistema tienen prioridad. Reiniciar la aplicacion
+despues de cambiar las credenciales. El `.env` esta ignorado por Git; no subirlo.
+
+El formulario solicita un email valido y envia el resumen solo despues de
+confirmar una compra: fecha, cantidad, pase, total y recordatorio de pago en
+boleteria. Si falta configuracion o falla Gmail, la compra sigue confirmada y la
+pantalla pide conservar el resumen. No hay reintentos automaticos; no es necesario
+repetir la compra. Que el servidor acepte el correo no garantiza su llegada a la
+bandeja de entrada: revisar tambien spam.
+
+Las pruebas usan SMTP simulado y no envian correos reales. Para verificar el envio
+real, completar las credenciales, iniciar la aplicacion y realizar una compra en
+efectivo con una fecha habilitada y un email propio como destinatario.
+
 ## Ejecutar las pruebas
 
 Con el entorno virtual activado:
@@ -120,7 +156,7 @@ ejecutada, junto con su resultado.
 
 ## Levantar la aplicacion web
 
-Cuando `app/main.py` tenga creada la aplicacion FastAPI, ejecutar:
+Ejecutar:
 
 ```powershell
 python -m uvicorn app.main:app --reload
@@ -138,6 +174,6 @@ La documentacion automatica de FastAPI estara disponible en:
 http://127.0.0.1:8000/docs
 ```
 
-Actualmente el proyecto se encuentra en la etapa de esqueleto, por lo que
-primero se implementaran las reglas de compra mediante TDD y luego se
-conectaran FastAPI, las plantillas HTML/HTMX y la base de datos.
+Actualmente estan conectados el formulario, las reglas de compra y la confirmacion
+por correo SMTP. El visitante sigue siendo de demostracion; la persistencia y el
+pago con tarjeta quedan pendientes.

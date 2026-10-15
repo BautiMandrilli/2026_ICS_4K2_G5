@@ -1,15 +1,25 @@
 from pathlib import Path
 from datetime import date
 
-from fastapi import APIRouter, Form, Request
+from fastapi import APIRouter, Depends, Form, Request
+from pydantic import EmailStr
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
+from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
+from app.infraestructura.notificaciones.correo import obtener_notificador
 
 
 router = APIRouter()
 templates = Jinja2Templates(directory=Path(__file__).parents[1] / "plantillas")
+
+
+def notificador_compra() -> NotificadorCompra | None:
+	try:
+		return obtener_notificador()
+	except ErrorNotificacion:
+		return None
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -29,6 +39,8 @@ def procesar_compra(
 	edades: list[int] = Form(...),
 	tipo_de_pase: str = Form(...),
 	forma_de_pago: str = Form(...),
+	email: EmailStr = Form(...),
+	notificador: NotificadorCompra | None = Depends(notificador_compra),
 ):
 	try:
 		if forma_de_pago != "efectivo":
@@ -40,6 +52,8 @@ def procesar_compra(
 			edades=edades,
 			tipo_de_pase=tipo_de_pase,
 			forma_de_pago=forma_de_pago,
+			email=str(email),
+			notificador=notificador,
 		)
 		errors = None
 	except (PermissionError, ValueError) as error:

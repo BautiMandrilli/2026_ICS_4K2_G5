@@ -14,12 +14,21 @@
         <p>Total: <strong>${{ resultado.total }}</strong></p>
     </div>
     <p class="mensaje-exito">Recordá abonar en boletería al ingresar al parque.</p>
+    {% if resultado.correo_estado == "enviado" %}
+    <p class="mensaje-exito">Enviamos el resumen de tu compra a tu email.</p>
+    {% elif resultado.correo_estado == "fallido" %}
+    <p class="mensaje-advertencia">Tu compra está confirmada, pero no pudimos enviar el correo. Conservá este resumen; no hace falta repetir la compra.</p>
+    {% endif %}
     <a class="boton-principal" href="/">Realizar otra compra</a>
     {% else %}
     <h1>Comprar entradas</h1>
     <p class="nota">Completá los datos de tu visita.</p>
 
     <form class="formulario" method="post" action="/compras">
+        <label class="campo" for="email">
+            Email para recibir la confirmación
+            <input id="email" name="email" type="email" autocomplete="email" required>
+        </label>
         <label class="campo" for="fecha-visita">
             Fecha de visita
             <input id="fecha-visita" name="fecha_visita" type="text" readonly required>
