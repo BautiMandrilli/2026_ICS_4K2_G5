@@ -149,6 +149,28 @@ def test_rechaza_calculo_con_tipo_de_pase_invalido():
 		calcular_total(1, "premium")
 
 
+def test_menor_o_igual_a_tres_no_paga():
+	assert calcular_total(1, "regular", [3]) == 0
+
+
+def test_menor_o_igual_a_quince_tiene_cincuenta_por_ciento_de_descuento():
+	assert calcular_total(1, "regular", [15]) == 5000
+
+
+def test_mayor_o_igual_a_sesenta_tiene_cincuenta_por_ciento_de_descuento():
+	assert calcular_total(1, "regular", [60]) == 5000
+
+
+def test_visitante_de_edad_intermedia_paga_precio_completo():
+	assert calcular_total(1, "regular", [16]) == 10000
+
+
+def test_calcula_descuentos_para_varios_visitantes():
+	edades = [3, 15, 60, 30]
+
+	assert calcular_total(4, "regular", edades) == 20000
+
+
 def test_rechaza_compra_sin_edades():
 	# Criterio de aceptacion: debe indicarse la edad de cada visitante.
 	with pytest.raises(ValueError):

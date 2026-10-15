@@ -1,12 +1,32 @@
 from datetime import date
 
 
-def calcular_total(cantidad: int, tipo_de_pase: str) -> int:
-	"""Calcula el total con los precios oficiales de cada pase."""
+def calcular_total(
+	cantidad: int,
+	tipo_de_pase: str,
+	edades: list[int] | None = None,
+) -> int:
+	"""Calcula el total aplicando descuentos segun la edad."""
 	precios = {"regular": 10000, "vip": 20000}
 	if tipo_de_pase not in precios:
 		raise ValueError("El tipo de pase no es valido")
-	return cantidad * precios[tipo_de_pase]
+
+	precio = precios[tipo_de_pase]
+	if edades is None:
+		return cantidad * precio
+
+	if len(edades) != cantidad:
+		raise ValueError("Debe indicar la edad de cada visitante")
+
+	total = 0
+	for edad in edades:
+		if edad <= 3:
+			total += 0
+		elif edad <= 15 or edad >= 60:
+			total += precio // 2
+		else:
+			total += precio
+	return total
 
 
 def es_dia_abierto(fecha: date) -> bool:

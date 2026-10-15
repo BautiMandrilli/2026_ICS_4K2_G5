@@ -33,7 +33,7 @@ def comprar_entradas(
 	)
 	validar_tipo_pase(tipo_de_pase)
 	validar_forma_pago(forma_de_pago)
-	total = calcular_total(cantidad, tipo_de_pase)
+	total = calcular_total(cantidad, tipo_de_pase, edades)
 
 	return {
 		"estado": "confirmada",
