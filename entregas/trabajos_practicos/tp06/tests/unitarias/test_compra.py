@@ -63,6 +63,36 @@ def test_permite_fecha_futura_si_el_parque_esta_abierto():
 	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, hoy)
 
 
+def test_rechaza_visita_un_lunes():
+	# Regla del parque: los lunes permanece cerrado.
+	lunes = date(2026, 10, 19)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(lunes)
+
+
+def test_rechaza_visita_el_25_de_diciembre():
+	# Regla del parque: el 25 de diciembre permanece cerrado.
+	navidad = date(2026, 12, 25)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(navidad)
+
+
+def test_rechaza_visita_el_1_de_enero():
+	# Regla del parque: el 1 de enero permanece cerrado.
+	comienzo_de_anio = date(2027, 1, 1)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(comienzo_de_anio)
+
+
+def test_permite_visita_un_martes():
+	martes = date(2026, 10, 20)
+
+	validar_fecha_visita(martes)
+
+
 def test_rechaza_tipo_de_pase_invalido():
 	# Criterio de aceptacion: el pase debe ser regular o VIP.
 	with pytest.raises(ValueError):

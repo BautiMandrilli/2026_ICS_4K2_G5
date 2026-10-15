@@ -1,6 +1,13 @@
 from datetime import date
 
 
+def es_dia_abierto(fecha: date) -> bool:
+	"""Indica si el parque abre segun su calendario oficial."""
+	es_lunes = fecha.weekday() == 0
+	es_feriado = (fecha.month, fecha.day) in {(1, 1), (12, 25)}
+	return not es_lunes and not es_feriado
+
+
 def validar_cantidad(cantidad: int) -> None:
 	"""Valida que la cantidad de entradas este entre 1 y 10."""
 	if cantidad < 1:
@@ -17,13 +24,15 @@ def validar_edades(cantidad: int, edades: list[int]) -> None:
 
 def validar_fecha_visita(
 	fecha_visita: date,
-	dias_abiertos: set[date],
+	dias_abiertos: set[date] | None = None,
 	fecha_actual: date | None = None,
 ) -> None:
 	"""Valida que la fecha sea actual o futura y corresponda a una apertura."""
 	if fecha_actual is not None and fecha_visita < fecha_actual:
 		raise ValueError("La fecha no puede ser anterior al dia actual")
-	if fecha_visita not in dias_abiertos:
+	if dias_abiertos is not None and fecha_visita not in dias_abiertos:
+		raise ValueError("El parque esta cerrado en la fecha seleccionada")
+	if dias_abiertos is None and not es_dia_abierto(fecha_visita):
 		raise ValueError("El parque esta cerrado en la fecha seleccionada")
 
 
