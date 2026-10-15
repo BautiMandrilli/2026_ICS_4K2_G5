@@ -149,3 +149,17 @@ def test_rechaza_mas_edades_que_entradas():
 
 def test_permite_una_edad_por_entrada():
 	validar_edades(2, [20, 30])
+
+
+def test_rechaza_edad_negativa():
+	with pytest.raises(ValueError):
+		validar_edades(1, [-1])
+
+
+def test_rechaza_edad_mayor_a_120():
+	with pytest.raises(ValueError):
+		validar_edades(1, [121])
+
+
+def test_permite_edad_cero():
+	validar_edades(1, [0])

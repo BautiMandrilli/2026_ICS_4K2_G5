@@ -17,9 +17,11 @@ def validar_cantidad(cantidad: int) -> None:
 
 
 def validar_edades(cantidad: int, edades: list[int]) -> None:
-	"""Valida que haya una edad informada por cada entrada."""
+	"""Valida que haya una edad entre 0 y 120 por cada entrada."""
 	if len(edades) != cantidad:
 		raise ValueError("Debe indicar la edad de cada visitante")
+	if any(edad < 0 or edad > 120 for edad in edades):
+		raise ValueError("La edad debe estar entre 0 y 120")
 
 
 def validar_fecha_visita(
