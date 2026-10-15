@@ -1,0 +1,141 @@
+/* Identidad visual definida por el equipo docente. */
+:root {
+    --verde-oscuro: #386641;
+    --verde: #6a994e;
+    --verde-claro: #a7c957;
+    --crema: #f2e8cf;
+    --rojo: #bc4749;
+    --blanco: #ffffff;
+    --sombra: 0 14px 35px rgba(56, 102, 65, 0.14);
+}
+
+/* Base general: la app se adapta a escritorio y a una pantalla movil. */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: var(--crema);
+    color: var(--verde-oscuro);
+    font-family: "Lato", sans-serif;
+}
+
+a {
+    color: var(--verde-oscuro);
+}
+
+/* Encabezado: .marca-logo deja reservado el lugar para el logo definitivo. */
+.encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem max(1rem, calc((100% - 980px) / 2));
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.marca-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 48px;
+    color: var(--blanco);
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.marca-logo__imagen {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border: 2px dashed var(--verde-claro);
+    border-radius: 50%;
+    color: var(--verde-claro);
+    font-size: 0.7rem;
+    text-align: center;
+}
+
+/* Contenedor principal: simula el ancho de un celular sin romper escritorio. */
+.contenedor {
+    width: min(100% - 2rem, 460px);
+    min-height: calc(100vh - 80px);
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+}
+
+.tarjeta {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: var(--blanco);
+    box-shadow: var(--sombra);
+}
+
+.etiqueta {
+    margin: 0 0 0.5rem;
+    color: var(--verde);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+h1,
+h2 {
+    margin-top: 0;
+}
+
+.formulario {
+    display: grid;
+    gap: 1rem;
+}
+
+.campo {
+    display: grid;
+    gap: 0.4rem;
+    font-weight: 700;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--verde-claro);
+    border-radius: 6px;
+    color: var(--verde-oscuro);
+    font: inherit;
+}
+
+.boton-principal {
+    display: inline-block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 0;
+    border-radius: 6px;
+    background: var(--verde);
+    color: var(--blanco);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 900;
+    text-align: center;
+}
+
+.boton-principal:hover {
+    background: var(--verde-oscuro);
+}
+
+.mensaje-error {
+    padding: 0.75rem;
+    border-left: 4px solid var(--rojo);
+    background: #f9dddd;
+    color: var(--rojo);
+}
+
+.nota {
+    color: #526452;
+    font-size: 0.9rem;
+}

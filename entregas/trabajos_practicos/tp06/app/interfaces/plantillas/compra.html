@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block titulo %}Comprar entradas | EcoHarmony Park{% endblock %}
+
+{% block contenido %}
+<section class="tarjeta">
+    <p class="etiqueta">Asegura tu visita</p>
+    <h1>Comprar entradas</h1>
+    <p class="nota">Esta pantalla queda preparada para conectarse al caso de uso de compra.</p>
+
+    <form class="formulario" method="post" action="/compras">
+        <label class="campo" for="fecha-visita">
+            Fecha de visita
+            <input id="fecha-visita" name="fecha_visita" type="date" required>
+        </label>
+
+        <label class="campo" for="cantidad">
+            Cantidad de entradas
+            <input id="cantidad" name="cantidad" type="number" min="1" max="10" required>
+        </label>
+
+        <label class="campo" for="tipo-pase">
+            Tipo de pase
+            <select id="tipo-pase" name="tipo_pase" required>
+                <option value="">Seleccionar</option>
+                <option value="regular">Regular</option>
+                <option value="vip">VIP</option>
+            </select>
+        </label>
+
+        <label class="campo" for="forma-pago">
+            Forma de pago
+            <select id="forma-pago" name="forma_pago" required>
+                <option value="">Seleccionar</option>
+                <option value="efectivo">Efectivo en boleteria</option>
+                <option value="tarjeta">Tarjeta</option>
+            </select>
+        </label>
+
+        <button class="boton-principal" type="submit">Continuar compra</button>
+    </form>
+</section>
+{% endblock %}
