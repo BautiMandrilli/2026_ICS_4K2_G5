@@ -11,8 +11,17 @@
     <form class="formulario" method="post" action="/compras">
         <label class="campo" for="fecha-visita">
             Fecha de visita
-            <input id="fecha-visita" name="fecha_visita" type="date" required>
+            <input id="fecha-visita" name="fecha_visita" type="text" readonly required>
         </label>
+        <p id="mensaje-fecha" class="mensaje-advertencia" hidden></p>
+
+        {% if error %}
+        <p class="mensaje-error">{{ error }}</p>
+        {% endif %}
+
+        {% if resultado %}
+        <p class="mensaje-exito">Compra validada para {{ resultado.fecha }}.</p>
+        {% endif %}
 
         <label class="campo" for="cantidad">
             Cantidad de entradas

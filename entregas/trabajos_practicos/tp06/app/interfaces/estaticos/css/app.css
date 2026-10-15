@@ -1,4 +1,3 @@
-/* Identidad visual definida por el equipo docente. */
 :root {
     --verde-oscuro: #386641;
     --verde: #6a994e;
@@ -9,7 +8,6 @@
     --sombra: 0 14px 35px rgba(56, 102, 65, 0.14);
 }
 
-/* Base general: la app se adapta a escritorio y a una pantalla movil. */
 * {
     box-sizing: border-box;
 }
@@ -26,7 +24,6 @@ a {
     color: var(--verde-oscuro);
 }
 
-/* Encabezado: .marca-logo deja reservado el lugar para el logo definitivo. */
 .encabezado {
     display: flex;
     align-items: center;
@@ -60,7 +57,6 @@ a {
     text-align: center;
 }
 
-/* Contenedor principal: simula el ancho de un celular sin romper escritorio. */
 .contenedor {
     width: min(100% - 2rem, 460px);
     min-height: calc(100vh - 80px);
@@ -138,6 +134,24 @@ select {
     border-left: 4px solid var(--rojo);
     background: #f9dddd;
     color: var(--rojo);
+}
+
+.mensaje-advertencia,
+.mensaje-exito {
+    margin: 0;
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-weight: 700;
+}
+
+.mensaje-advertencia {
+    background: #f9dddd;
+    color: var(--rojo);
+}
+
+.mensaje-exito {
+    background: #e3efd1;
+    color: var(--verde-oscuro);
 }
 
 .nota {
