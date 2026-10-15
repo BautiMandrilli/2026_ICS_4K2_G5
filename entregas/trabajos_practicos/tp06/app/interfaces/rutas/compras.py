@@ -3,11 +3,12 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, Form, Request
 from pydantic import EmailStr
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 
 from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
+from app.infraestructura.autenticacion import usuario_actual, usuario_actual_opcional
 from app.infraestructura.notificaciones.correo import obtener_notificador
 
 
@@ -23,11 +24,13 @@ def notificador_compra() -> NotificadorCompra | None:
 
 
 @router.get("/", response_class=HTMLResponse)
-def mostrar_compra(request: Request):
+def mostrar_compra(request: Request, usuario: dict | None = Depends(usuario_actual_opcional)):
+	if usuario is None:
+		return RedirectResponse("/login", status_code=303)
 	return templates.TemplateResponse(
 		request=request,
 		name="compra.html",
-		context={},
+		context={"usuario": usuario},
 	)
 
 
@@ -41,12 +44,13 @@ def procesar_compra(
 	forma_de_pago: str = Form(...),
 	email: EmailStr = Form(...),
 	notificador: NotificadorCompra | None = Depends(notificador_compra),
+	usuario: dict = Depends(usuario_actual),
 ):
 	try:
 		if forma_de_pago != "efectivo":
 			raise ValueError("El pago con tarjeta se implementara en la siguiente etapa")
 		resultado = comprar_entradas(
-			usuario="visitante_demo",
+			usuario=usuario["email"],
 			fecha_visita=fecha_visita,
 			cantidad=cantidad,
 			edades=edades,
@@ -55,14 +59,14 @@ def procesar_compra(
 			email=str(email),
 			notificador=notificador,
 		)
-		errors = None
-	except (PermissionError, ValueError) as error:
+		error = None
+	except (PermissionError, ValueError) as excepcion:
 		resultado = None
-		errors = str(error)
+		error = str(excepcion)
 
 	return templates.TemplateResponse(
 		request=request,
 		name="compra.html",
-		context={"error": errors, "resultado": resultado},
-		status_code=400 if errors else 200,
+		context={"error": error, "resultado": resultado, "usuario": usuario},
+		status_code=400 if error else 200,
 	)

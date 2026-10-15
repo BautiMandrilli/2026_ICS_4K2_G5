@@ -9,6 +9,7 @@ from fastapi.testclient import TestClient
 
 from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
 from app.aplicacion.notificaciones import ErrorNotificacion
+from app.infraestructura.base_de_datos import usuarios as base_de_datos
 from app.infraestructura.notificaciones import correo
 from app.interfaces.rutas.compras import notificador_compra
 from app.main import app
@@ -118,11 +119,16 @@ def test_configuracion_invalida_no_impide_comprar(variable, valor):
 
 
 @pytest.fixture
-def cliente():
+def cliente(tmp_path, monkeypatch):
+    monkeypatch.setattr(base_de_datos, "RUTA_BASE_DATOS", tmp_path / "usuarios.db")
     notificador = Mock()
     app.dependency_overrides[notificador_compra] = lambda: notificador
     try:
         with TestClient(app) as client:
+            client.post(
+                "/registro",
+                data={"email": "comprador@example.com", "contrasena": "clave-de-prueba-123"},
+            )
             yield client, notificador
     finally:
         app.dependency_overrides.clear()

@@ -15,8 +15,7 @@ tp06/
 │   │   └── casos_de_uso/
 │   │       └── comprar_entradas.py    # coordina el proceso de compra
 │   ├── infraestructura/               # detalles tecnicos externos
-│   │   ├── base_de_datos/              # persistencia de compras y usuarios
-│   │   ├── pagos/                      # Mercado Pago simulado
+│   │   ├── base_de_datos/              # persistencia de usuarios
 │   │   └── notificaciones/             # correo SMTP con Gmail
 │   └── interfaces/                     # entrada y salida de la aplicacion
 │       ├── estaticos/                  # CSS, JavaScript e imagenes
@@ -126,8 +125,8 @@ La aplicacion busca el `.env` dentro de `app`, independientemente del directorio
 de ejecucion. Las variables del sistema tienen prioridad. Reiniciar la aplicacion
 despues de cambiar las credenciales. El `.env` esta ignorado por Git; no subirlo.
 
-El formulario solicita un email valido y envia el resumen solo despues de
-confirmar una compra: fecha, cantidad, pase, total y recordatorio de pago en
+El formulario solicita un email valido y envia el resumen despues de confirmar
+una compra en efectivo: fecha, cantidad, pase, total y recordatorio de pago en
 boleteria. Si falta configuracion o falla Gmail, la compra sigue confirmada y la
 pantalla pide conservar el resumen. No hay reintentos automaticos; no es necesario
 repetir la compra. Que el servidor acepte el correo no garantiza su llegada a la
@@ -168,12 +167,19 @@ Luego abrir en el navegador:
 http://127.0.0.1:8000
 ```
 
+La primera vez, abrir `http://127.0.0.1:8000/registro` para crear una cuenta.
+El registro inicia la sesión y permite acceder al formulario de compra. Las
+cuentas se guardan en `app/usuarios.db` y las contraseñas se almacenan con hash.
+La sesión dura ocho horas y se cierra desde el botón del encabezado. Para que
+las sesiones sigan válidas después de reiniciar el servidor, configurar una
+clave aleatoria propia en `SESSION_SECRET_KEY` dentro de `app/.env`.
+
 La documentacion automatica de FastAPI estara disponible en:
 
 ```text
 http://127.0.0.1:8000/docs
 ```
 
-Actualmente estan conectados el formulario, las reglas de compra y la confirmacion
-por correo SMTP. El visitante sigue siendo de demostracion; la persistencia y el
-pago con tarjeta quedan pendientes.
+La aplicacion conecta registro y sesion, formulario de compra en efectivo y
+confirmacion por correo SMTP. El pago con tarjeta y su integracion con un proveedor
+externo quedan pendientes.

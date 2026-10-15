@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block titulo %}Crear cuenta | EcoHarmony Park{% endblock %}
+
+{% block contenido %}
+<section class="tarjeta">
+    <p class="etiqueta">Visitantes registrados</p>
+    <h1>Crear cuenta</h1>
+    <p class="nota">Registrate para iniciar sesión y comprar entradas.</p>
+
+    {% if error %}
+    <p class="mensaje-error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form class="formulario" method="post" action="/registro">
+        <label class="campo" for="email">Correo electrónico
+            <input id="email" name="email" type="email" autocomplete="email" required>
+        </label>
+        <label class="campo" for="contrasena">Contraseña
+            <input id="contrasena" name="contrasena" type="password" autocomplete="new-password" minlength="8" maxlength="128" required>
+        </label>
+        <p class="nota">Usá al menos 8 caracteres.</p>
+        <button class="boton-principal" type="submit">Crear cuenta</button>
+    </form>
+    <p class="enlace-sesion">¿Ya tenés una cuenta? <a href="/login">Iniciar sesión</a></p>
+</section>
+{% endblock %}

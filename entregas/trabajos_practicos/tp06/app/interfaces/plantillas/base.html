@@ -18,6 +18,14 @@
             <span class="marca-logo__imagen" aria-label="Espacio reservado para el logo">LOGO</span>
             <span>EcoHarmony Park</span>
         </a>
+        {% if usuario %}
+        <div class="sesion-activa">
+            <span>{{ usuario.email }}</span>
+            <form method="post" action="/logout">
+                <button class="boton-sesion" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+        {% endif %}
     </header>
 
     <main class="contenedor">

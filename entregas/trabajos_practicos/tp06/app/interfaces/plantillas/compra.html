@@ -27,7 +27,7 @@
     <form class="formulario" method="post" action="/compras">
         <label class="campo" for="email">
             Email para recibir la confirmación
-            <input id="email" name="email" type="email" autocomplete="email" required>
+            <input id="email" name="email" type="email" autocomplete="email" required value="{{ usuario.email if usuario else '' }}">
         </label>
         <label class="campo" for="fecha-visita">
             Fecha de visita

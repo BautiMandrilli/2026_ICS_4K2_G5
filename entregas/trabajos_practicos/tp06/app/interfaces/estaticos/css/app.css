@@ -28,10 +28,37 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 1rem;
     padding: 1rem max(1rem, calc((100% - 980px) / 2));
     background: var(--verde-oscuro);
     color: var(--blanco);
+}
+
+.sesion-activa {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--blanco);
+    font-size: 0.9rem;
+}
+
+.sesion-activa form {
+    margin: 0;
+}
+
+.boton-sesion {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--verde-claro);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--blanco);
+    cursor: pointer;
+    font: inherit;
+}
+
+.boton-sesion:hover {
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .marca-logo {
@@ -164,4 +191,9 @@ select {
 .nota {
     color: #526452;
     font-size: 0.9rem;
+}
+
+.enlace-sesion {
+    margin: 1.25rem 0 0;
+    text-align: center;
 }

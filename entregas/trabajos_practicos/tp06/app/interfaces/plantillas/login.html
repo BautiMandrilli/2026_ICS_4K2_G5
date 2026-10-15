@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block titulo %}Iniciar sesión | EcoHarmony Park{% endblock %}
+
+{% block contenido %}
+<section class="tarjeta">
+    <p class="etiqueta">Tu visita empieza aquí</p>
+    <h1>Iniciar sesión</h1>
+    <p class="nota">Ingresá con tu cuenta registrada para comprar entradas.</p>
+
+    {% if error %}
+    <p class="mensaje-error" role="alert">{{ error }}</p>
+    {% endif %}
+
+    <form class="formulario" method="post" action="/login">
+        <label class="campo" for="email">Correo electrónico
+            <input id="email" name="email" type="email" autocomplete="username" required>
+        </label>
+        <label class="campo" for="contrasena">Contraseña
+            <input id="contrasena" name="contrasena" type="password" autocomplete="current-password" required>
+        </label>
+        <button class="boton-principal" type="submit">Iniciar sesión</button>
+    </form>
+    <p class="enlace-sesion">¿Todavía no tenés una cuenta? <a href="/registro">Crear cuenta</a></p>
+</section>
+{% endblock %}
