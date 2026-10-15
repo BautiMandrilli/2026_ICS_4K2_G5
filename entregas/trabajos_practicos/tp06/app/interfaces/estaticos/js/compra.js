@@ -71,7 +71,15 @@ function actualizarCamposDeEdad() {
     }
 }
 
-cantidadInput.addEventListener("input", actualizarCamposDeEdad);
+cantidadInput.addEventListener("input", () => {
+    const cantidad = Number.parseInt(cantidadInput.value, 10);
+
+    if (cantidad > 10) {
+        cantidadInput.value = "10";
+    }
+
+    actualizarCamposDeEdad();
+});
 fechaInput.addEventListener("input", validarFechaSeleccionada);
 fechaInput.addEventListener("change", validarFechaSeleccionada);
 formulario.addEventListener("submit", (evento) => {
