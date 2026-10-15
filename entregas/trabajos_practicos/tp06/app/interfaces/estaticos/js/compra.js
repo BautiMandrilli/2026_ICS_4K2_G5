@@ -65,6 +65,15 @@ function actualizarCamposDeEdad() {
         input.max = "120";
         input.required = true;
         input.value = edadesActuales[indice] || "";
+        input.addEventListener("input", () => {
+            const edad = Number.parseInt(input.value, 10);
+
+            if (edad < 0) {
+                input.value = "0";
+            } else if (edad > 120) {
+                input.value = "120";
+            }
+        });
 
         label.appendChild(input);
         edadesContainer.appendChild(label);
@@ -76,6 +85,8 @@ cantidadInput.addEventListener("input", () => {
 
     if (cantidad > 10) {
         cantidadInput.value = "10";
+    } else if (cantidad < 1 && cantidadInput.value !== "") {
+        cantidadInput.value = "1";
     }
 
     actualizarCamposDeEdad();
