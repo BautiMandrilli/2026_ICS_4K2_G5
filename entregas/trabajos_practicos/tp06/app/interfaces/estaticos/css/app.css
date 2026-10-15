@@ -71,6 +71,13 @@ a {
     box-shadow: var(--sombra);
 }
 
+.resumen-compra {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-left: 4px solid var(--verde);
+    background: var(--crema);
+}
+
 .etiqueta {
     margin: 0 0 0.5rem;
     color: var(--verde);

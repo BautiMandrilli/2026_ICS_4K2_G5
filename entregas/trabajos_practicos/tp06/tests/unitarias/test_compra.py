@@ -4,6 +4,7 @@ import pytest
 
 from app.dominio.servicios.reglas_compra import (
 	validar_cantidad,
+	calcular_total,
 	validar_edades,
 	validar_fecha_visita,
 	validar_forma_pago,
@@ -129,6 +130,23 @@ def test_rechaza_forma_de_pago_vacia():
 def test_rechaza_tipo_de_pase_vacio():
 	with pytest.raises(ValueError):
 		validar_tipo_pase("")
+
+
+def test_calcula_total_de_una_entrada_regular():
+	assert calcular_total(1, "regular") == 10000
+
+
+def test_calcula_total_de_una_entrada_vip():
+	assert calcular_total(1, "vip") == 20000
+
+
+def test_calcula_total_de_dos_entradas_regulares():
+	assert calcular_total(2, "regular") == 20000
+
+
+def test_rechaza_calculo_con_tipo_de_pase_invalido():
+	with pytest.raises(ValueError):
+		calcular_total(1, "premium")
 
 
 def test_rechaza_compra_sin_edades():

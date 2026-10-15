@@ -1,6 +1,7 @@
 from datetime import date
 
 from app.dominio.servicios.reglas_compra import (
+	calcular_total,
 	validar_cantidad,
 	validar_edades,
 	validar_fecha_visita,
@@ -32,6 +33,7 @@ def comprar_entradas(
 	)
 	validar_tipo_pase(tipo_de_pase)
 	validar_forma_pago(forma_de_pago)
+	total = calcular_total(cantidad, tipo_de_pase)
 
 	return {
 		"estado": "confirmada",
@@ -40,4 +42,5 @@ def comprar_entradas(
 		"cantidad": cantidad,
 		"tipo_de_pase": tipo_de_pase,
 		"forma_de_pago": forma_de_pago,
+		"total": total,
 	}

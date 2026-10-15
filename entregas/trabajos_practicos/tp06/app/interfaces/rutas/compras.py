@@ -31,6 +31,8 @@ def procesar_compra(
 	forma_de_pago: str = Form(...),
 ):
 	try:
+		if forma_de_pago != "efectivo":
+			raise ValueError("El pago con tarjeta se implementara en la siguiente etapa")
 		resultado = comprar_entradas(
 			usuario="visitante_demo",
 			fecha_visita=fecha_visita,

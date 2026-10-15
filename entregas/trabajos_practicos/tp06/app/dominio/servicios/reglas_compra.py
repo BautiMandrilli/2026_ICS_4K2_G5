@@ -1,6 +1,14 @@
 from datetime import date
 
 
+def calcular_total(cantidad: int, tipo_de_pase: str) -> int:
+	"""Calcula el total con los precios oficiales de cada pase."""
+	precios = {"regular": 10000, "vip": 20000}
+	if tipo_de_pase not in precios:
+		raise ValueError("El tipo de pase no es valido")
+	return cantidad * precios[tipo_de_pase]
+
+
 def es_dia_abierto(fecha: date) -> bool:
 	"""Indica si el parque abre segun su calendario oficial."""
 	es_lunes = fecha.weekday() == 0

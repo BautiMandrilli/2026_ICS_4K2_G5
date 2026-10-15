@@ -5,8 +5,19 @@
 {% block contenido %}
 <section class="tarjeta">
     <p class="etiqueta">Asegura tu visita</p>
+    {% if resultado %}
+    <h1>Compra confirmada</h1>
+    <div class="resumen-compra">
+        <p>Fecha de visita: <strong>{{ resultado.fecha }}</strong></p>
+        <p>Entradas: <strong>{{ resultado.cantidad }}</strong></p>
+        <p>Tipo de pase: <strong>{{ resultado.tipo_de_pase }}</strong></p>
+        <p>Total: <strong>${{ resultado.total }}</strong></p>
+    </div>
+    <p class="mensaje-exito">Recordá abonar en boletería al ingresar al parque.</p>
+    <a class="boton-principal" href="/">Realizar otra compra</a>
+    {% else %}
     <h1>Comprar entradas</h1>
-    <p class="nota">Esta pantalla queda preparada para conectarse al caso de uso de compra.</p>
+    <p class="nota">Completá los datos de tu visita.</p>
 
     <form class="formulario" method="post" action="/compras">
         <label class="campo" for="fecha-visita">
@@ -32,7 +43,7 @@
 
         <label class="campo" for="tipo-pase">
             Tipo de pase
-            <select id="tipo-pase" name="tipo_pase" required>
+            <select id="tipo-pase" name="tipo_de_pase" required>
                 <option value="">Seleccionar</option>
                 <option value="regular">Regular</option>
                 <option value="vip">VIP</option>
@@ -41,7 +52,7 @@
 
         <label class="campo" for="forma-pago">
             Forma de pago
-            <select id="forma-pago" name="forma_pago" required>
+            <select id="forma-pago" name="forma_de_pago" required>
                 <option value="">Seleccionar</option>
                 <option value="efectivo">Efectivo en boleteria</option>
                 <option value="tarjeta">Tarjeta</option>
@@ -50,6 +61,9 @@
 
         <button class="boton-principal" type="submit">Continuar compra</button>
     </form>
+    {% endif %}
 </section>
+{% if not resultado %}
 <script src="/static/js/compra.js"></script>
+{% endif %}
 {% endblock %}
