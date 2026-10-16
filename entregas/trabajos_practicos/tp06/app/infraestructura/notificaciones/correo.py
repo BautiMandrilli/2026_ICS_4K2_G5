@@ -33,13 +33,17 @@ class NotificadorSMTP:
             mensaje["Subject"] = "Confirmación de compra | EcoHarmony Park"
             mensaje["From"] = formataddr((self.nombre, self.usuario))
             mensaje["To"] = destinatario
+            if compra.get("forma_de_pago") == "mercadopago":
+                cierre = "El pago con Mercado Pago ya está confirmado.\n"
+            else:
+                cierre = "Recordá abonar en boletería al ingresar al parque.\n"
             mensaje.set_content(
                 "Tu compra está confirmada.\n\n"
                 f"Fecha de visita: {compra['fecha']}\n"
                 f"Entradas: {compra['cantidad']}\n"
                 f"Tipo de pase: {compra['tipo_de_pase']}\n"
                 f"Total: ${compra['total']}\n\n"
-                "Recordá abonar en boletería al ingresar al parque.\n"
+                f"{cierre}"
             )
             with smtplib.SMTP(self.host, self.puerto, timeout=self.timeout) as smtp:
                 smtp.ehlo()

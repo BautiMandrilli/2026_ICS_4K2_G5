@@ -109,7 +109,7 @@ def test_permite_tipo_de_pase_vip():
 
 
 def test_rechaza_forma_de_pago_invalida():
-	# Criterio de aceptacion: debe seleccionarse efectivo o tarjeta.
+	# Criterio de aceptacion: efectivo, tarjeta o Mercado Pago.
 	with pytest.raises(ValueError):
 		validar_forma_pago("transferencia")
 
@@ -120,6 +120,10 @@ def test_permite_pago_en_efectivo():
 
 def test_permite_pago_con_tarjeta():
 	validar_forma_pago("tarjeta")
+
+
+def test_permite_pago_con_mercadopago():
+	validar_forma_pago("mercadopago")
 
 
 def test_rechaza_forma_de_pago_vacia():

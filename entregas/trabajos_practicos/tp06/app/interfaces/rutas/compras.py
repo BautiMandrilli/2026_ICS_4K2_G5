@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pathlib import Path
 from datetime import date
 
@@ -47,8 +49,10 @@ def procesar_compra(
 	usuario: dict = Depends(usuario_actual),
 ):
 	try:
-		if forma_de_pago != "efectivo":
+		if forma_de_pago == "tarjeta":
 			raise ValueError("El pago con tarjeta se implementara en la siguiente etapa")
+		if forma_de_pago not in {"efectivo", "mercadopago"}:
+			raise ValueError("La forma de pago no es valida")
 		resultado = comprar_entradas(
 			usuario=usuario["email"],
 			fecha_visita=fecha_visita,
