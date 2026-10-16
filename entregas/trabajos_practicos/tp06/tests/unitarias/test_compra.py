@@ -207,3 +207,18 @@ def test_rechaza_edad_mayor_a_120():
 
 def test_permite_edad_cero():
 	validar_edades(1, [0])
+
+
+def test_permite_fecha_a_exactamente_un_mes():
+	hoy = date (2026,10,16)
+	un_mes_despues = date(2026,11,16)
+
+	validar_fecha_visita(un_mes_despues,  {un_mes_despues}, hoy)
+
+
+def test_rechaza_fecha_a_mas_de_un_mes():
+	hoy = date(2026, 10, 16)
+	mas_de_un_mes = date(2026, 11, 17)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(mas_de_un_mes, {mas_de_un_mes}, hoy)
