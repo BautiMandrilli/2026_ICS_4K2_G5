@@ -294,15 +294,6 @@ h2 {
     display: none;
 }
 
-.qr-pago {
-    width: 220px;
-    height: 220px;
-    padding: 0.75rem;
-    border: 1px solid var(--verde-claro);
-    border-radius: 8px;
-    background: var(--blanco);
-}
-
 .spinner-pago {
     width: 2.5rem;
     height: 2.5rem;

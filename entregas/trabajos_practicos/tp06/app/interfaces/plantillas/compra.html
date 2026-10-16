@@ -81,12 +81,11 @@
 <dialog id="modal-mercadopago" class="modal-pago" aria-labelledby="titulo-mercadopago">
     <div class="modal-pago__contenido">
         <p class="etiqueta">Mercado Pago</p>
-        <h2 id="titulo-mercadopago">Pago con QR</h2>
+        <h2 id="titulo-mercadopago">Pago online</h2>
 
-        <div id="paso-qr" class="paso-pago">
-            <p class="nota">Escaneá el código con la app de Mercado Pago.</p>
-            <canvas id="qr-mercadopago" class="qr-pago" width="220" height="220" aria-label="Código QR de pago"></canvas>
-            <p class="nota">El código es válido por unos segundos.</p>
+        <div id="paso-redireccion" class="paso-pago">
+            <div class="spinner-pago" aria-hidden="true"></div>
+            <p class="nota">Redirigiendo a Mercado Pago…</p>
         </div>
 
         <div id="paso-spinner" class="paso-pago" hidden>

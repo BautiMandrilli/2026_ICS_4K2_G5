@@ -5,9 +5,11 @@ const mensajeFecha = document.querySelector("#mensaje-fecha");
 const formulario = document.querySelector(".formulario");
 const formaPagoSelect = document.querySelector("#forma-pago");
 const modalMercadoPago = document.querySelector("#modal-mercadopago");
-const pasoQr = document.querySelector("#paso-qr");
+const pasoRedireccion = document.querySelector("#paso-redireccion");
 const pasoSpinner = document.querySelector("#paso-spinner");
-const canvasQr = document.querySelector("#qr-mercadopago");
+
+const URL_PAGO_MERCADOPAGO =
+    "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=eco-harmony-demo-expirado";
 
 let pagoMercadoPagoListo = false;
 
@@ -87,54 +89,8 @@ function actualizarCamposDeEdad() {
     }
 }
 
-function dibujarPatronFinder(ctx, origenX, origenY, celda) {
-    ctx.fillStyle = "#000000";
-    ctx.fillRect(origenX * celda, origenY * celda, 7 * celda, 7 * celda);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect((origenX + 1) * celda, (origenY + 1) * celda, 5 * celda, 5 * celda);
-    ctx.fillStyle = "#000000";
-    ctx.fillRect((origenX + 2) * celda, (origenY + 2) * celda, 3 * celda, 3 * celda);
-}
-
-function generarQrAleatorio(canvas) {
-    const modulos = 21;
-    const celda = Math.floor(canvas.width / modulos);
-    const ctx = canvas.getContext("2d");
-    const semilla = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    for (let fila = 0; fila < modulos; fila += 1) {
-        for (let columna = 0; columna < modulos; columna += 1) {
-            const enFinder =
-                (fila < 8 && columna < 8) ||
-                (fila < 8 && columna > modulos - 9) ||
-                (fila > modulos - 9 && columna < 8);
-
-            if (enFinder) {
-                continue;
-            }
-
-            const hash = (semilla.charCodeAt((fila * modulos + columna) % semilla.length) +
-                fila * 17 +
-                columna * 31) %
-                2;
-
-            if (hash === 0) {
-                ctx.fillStyle = "#000000";
-                ctx.fillRect(columna * celda, fila * celda, celda, celda);
-            }
-        }
-    }
-
-    dibujarPatronFinder(ctx, 0, 0, celda);
-    dibujarPatronFinder(ctx, modulos - 7, 0, celda);
-    dibujarPatronFinder(ctx, 0, modulos - 7, celda);
-}
-
 function mostrarPaso(paso) {
-    pasoQr.hidden = paso !== "qr";
+    pasoRedireccion.hidden = paso !== "redireccion";
     pasoSpinner.hidden = paso !== "spinner";
 }
 
@@ -145,11 +101,13 @@ function esperar(ms) {
 }
 
 async function iniciarPagoMercadoPago() {
-    generarQrAleatorio(canvasQr);
-    mostrarPaso("qr");
+    mostrarPaso("redireccion");
     modalMercadoPago.showModal();
 
-    await esperar(5000);
+    await esperar(800);
+    window.open(URL_PAGO_MERCADOPAGO, "_blank", "noopener,noreferrer");
+    await esperar(4200);
+
     mostrarPaso("spinner");
     await esperar(3000);
 
