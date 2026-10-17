@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 def calcular_total(
@@ -62,6 +63,8 @@ def validar_fecha_visita(
 	"""Valida que la fecha sea actual o futura y corresponda a una apertura."""
 	if fecha_actual is not None and fecha_visita < fecha_actual:
 		raise ValueError("La fecha no puede ser anterior al dia actual")
+	if fecha_actual is not None and fecha_visita > fecha_actual + relativedelta(months=1):
+		raise ValueError("La fecha no puede superar un mes de anticipacion")
 	if dias_abiertos is not None and fecha_visita not in dias_abiertos:
 		raise ValueError("El parque esta cerrado en la fecha seleccionada")
 	if dias_abiertos is None and not es_dia_abierto(fecha_visita):

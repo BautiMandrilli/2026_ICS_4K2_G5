@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from unittest.mock import Mock, patch
 import os
 import smtplib
@@ -134,8 +134,15 @@ def cliente(tmp_path, monkeypatch):
         app.dependency_overrides.clear()
 
 
+def proxima_fecha_abierta():
+    dia = date.today() + timedelta(days=1)
+    while dia.weekday() == 0 or (dia.month, dia.day) in {(1, 1), (12, 25)}:
+        dia += timedelta(days=1)
+    return dia
+
+
 def formulario():
-    return dict(fecha_visita="2099-10-15", cantidad="1", edades="25",
+    return dict(fecha_visita=proxima_fecha_abierta().isoformat(), cantidad="1", edades="25",
                 tipo_de_pase="regular", forma_de_pago="efectivo", email="cliente@example.com")
 
 
