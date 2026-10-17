@@ -52,9 +52,10 @@ def test_rechaza_fecha_anterior_al_dia_actual():
 
 
 def test_permite_fecha_actual_si_el_parque_esta_abierto():
-	hoy = date.today()
+	ahora = datetime(2026, 10, 16, 10, 0)
+	hoy = ahora.date()
 
-	validar_fecha_visita(hoy, {hoy}, datetime.now())
+	validar_fecha_visita(hoy, {hoy}, ahora)
 
 
 def test_permite_fecha_futura_si_el_parque_esta_abierto():
