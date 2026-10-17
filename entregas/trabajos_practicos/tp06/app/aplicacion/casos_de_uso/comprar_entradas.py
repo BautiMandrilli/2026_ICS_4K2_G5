@@ -1,12 +1,15 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 import logging
 
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
 
+from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
+
 from app.dominio.servicios.reglas_compra import (
 	calcular_total,
+	validar_acumulado,
 	validar_cantidad,
 	validar_edades,
 	validar_fecha_visita,
@@ -26,9 +29,10 @@ def comprar_entradas(
 	tipo_de_pase: str,
 	forma_de_pago: str,
 	dias_abiertos: set[date] | None = None,
-	fecha_actual: date | None = None,
+	ahora: datetime | None = None,
 	email: str | None = None,
 	notificador: NotificadorCompra | None = None,
+	repositorio: RepositorioComprasEnMemoria | None = None,
 ) -> dict:
 	"""Coordina las validaciones necesarias para confirmar una compra."""
 	if not usuario:
@@ -39,12 +43,16 @@ def comprar_entradas(
 	validar_fecha_visita(
 		fecha_visita,
 		dias_abiertos,
-		fecha_actual or date.today(),
+		ahora or datetime.now(),
 	)
 	validar_tipo_pase(tipo_de_pase)
 	validar_forma_pago(forma_de_pago)
+	if repositorio is not None:
+		validar_acumulado(repositorio.entradas_compradas(usuario, fecha_visita), cantidad)
 	total = calcular_total(cantidad, tipo_de_pase, edades)
-
+	
+	if repositorio is not None:
+		repositorio.registrar(usuario, fecha_visita, cantidad)
 	resultado = {
 		"estado": "confirmada",
 		"usuario": usuario,

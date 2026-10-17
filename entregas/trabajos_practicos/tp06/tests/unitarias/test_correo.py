@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 from unittest.mock import Mock, patch
 import os
 import smtplib
@@ -11,7 +11,8 @@ from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
 from app.aplicacion.notificaciones import ErrorNotificacion
 from app.infraestructura.base_de_datos import usuarios as base_de_datos
 from app.infraestructura.notificaciones import correo
-from app.interfaces.rutas.compras import notificador_compra
+from app.interfaces.rutas.compras import notificador_compra, repositorio_compras
+from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
 from app.main import app
 
 
@@ -20,7 +21,7 @@ def datos():
     return dict(
         usuario="visitante", fecha_visita=date(2030, 10, 15), cantidad=2,
         edades=[25, 30], tipo_de_pase="regular", forma_de_pago="efectivo",
-        fecha_actual=date(2030, 10, 14),
+        ahora=datetime(2030, 10, 14, 10, 0),
     )
 
 
@@ -134,8 +135,15 @@ def cliente(tmp_path, monkeypatch):
         app.dependency_overrides.clear()
 
 
+def proxima_fecha_abierta():
+    dia = date.today() + timedelta(days=1)
+    while dia.weekday() == 0 or (dia.month, dia.day) in {(1, 1), (12, 25)}:
+        dia += timedelta(days=1)
+    return dia
+
+
 def formulario():
-    return dict(fecha_visita="2099-10-15", cantidad="1", edades="25",
+    return dict(fecha_visita=proxima_fecha_abierta().isoformat(), cantidad="1", edades="25",
                 tipo_de_pase="regular", forma_de_pago="efectivo", email="cliente@example.com")
 
 
@@ -185,3 +193,19 @@ def test_ruta_sin_configuracion_confirma_con_aviso(cliente):
     assert respuesta.status_code == 200
     assert "Compra confirmada" in respuesta.text
     assert "no hace falta repetir la compra" in respuesta.text
+
+
+def test_ruta_rechaza_compra_si_el_acumulado_supera_diez(cliente):
+    client, _ = cliente
+    repositorio = RepositorioComprasEnMemoria()
+    app.dependency_overrides[repositorio_compras] = lambda: repositorio
+
+    primera = client.post(
+        "/compras", data={**formulario(), "cantidad": "6", "edades": ["25"] * 6}
+    )
+    segunda = client.post(
+        "/compras", data={**formulario(), "cantidad": "5", "edades": ["25"] * 5}
+    )
+
+    assert primera.status_code == 200
+    assert segunda.status_code == 400
