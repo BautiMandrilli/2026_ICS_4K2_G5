@@ -5,6 +5,8 @@ import logging
 
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
 
+from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
+
 from app.dominio.servicios.reglas_compra import (
 	calcular_total,
 	validar_cantidad,
@@ -29,6 +31,7 @@ def comprar_entradas(
 	ahora: datetime | None = None,
 	email: str | None = None,
 	notificador: NotificadorCompra | None = None,
+	repositorio: RepositorioComprasEnMemoria | None = None,
 ) -> dict:
 	"""Coordina las validaciones necesarias para confirmar una compra."""
 	if not usuario:
@@ -43,8 +46,14 @@ def comprar_entradas(
 	)
 	validar_tipo_pase(tipo_de_pase)
 	validar_forma_pago(forma_de_pago)
+	if repositorio is not None:
+		ya_compradas = repositorio.entradas_compradas(usuario, fecha_visita)
+		if ya_compradas + cantidad > 10:
+			raise ValueError("El máximo es de 10 entradas por fecha por usuario")
 	total = calcular_total(cantidad, tipo_de_pase, edades)
-
+	
+	if repositorio is not None:
+		repositorio.registrar(usuario, fecha_visita, cantidad)
 	resultado = {
 		"estado": "confirmada",
 		"usuario": usuario,
