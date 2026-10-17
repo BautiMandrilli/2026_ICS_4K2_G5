@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 MESES_MAXIMOS_ANTICIPACION = 1
 HORA_LIMITE_COMPRA_MISMO_DIA = time(17, 30)
+MAX_ENTRADAS = 10
 
 def calcular_total(
 	cantidad: int,
@@ -42,11 +43,11 @@ def es_dia_abierto(fecha: date) -> bool:
 
 
 def validar_cantidad(cantidad: int) -> None:
-	"""Valida que la cantidad de entradas este entre 1 y 10."""
+	"""Valida que la cantidad de entradas este entre 1 y MAX_ENTRADAS."""
 	if cantidad < 1:
 		raise ValueError("Debe comprar al menos una entrada")
-	if cantidad > 10:
-		raise ValueError("La cantidad maxima es de 10 entradas")
+	if cantidad > MAX_ENTRADAS:
+		raise ValueError(f"La cantidad maxima es de {MAX_ENTRADAS} entradas")
 
 
 def validar_edades(cantidad: int, edades: list[int]) -> None:

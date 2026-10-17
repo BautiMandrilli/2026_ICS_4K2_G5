@@ -8,6 +8,7 @@ from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
 from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
 
 from app.dominio.servicios.reglas_compra import (
+	MAX_ENTRADAS,
 	calcular_total,
 	validar_cantidad,
 	validar_edades,
@@ -48,8 +49,8 @@ def comprar_entradas(
 	validar_forma_pago(forma_de_pago)
 	if repositorio is not None:
 		ya_compradas = repositorio.entradas_compradas(usuario, fecha_visita)
-		if ya_compradas + cantidad > 10:
-			raise ValueError("El máximo es de 10 entradas por fecha por usuario")
+		if ya_compradas + cantidad > MAX_ENTRADAS:
+			raise ValueError(f"El máximo es de {MAX_ENTRADAS} entradas por fecha por usuario")
 	total = calcular_total(cantidad, tipo_de_pase, edades)
 	
 	if repositorio is not None:
