@@ -94,4 +94,5 @@ def validar_forma_pago(forma_de_pago: str) -> None:
 
 def validar_acumulado(ya_compradas: int, cantidad: int) -> None:
 	"""Valida que el total de entradas de la fecha no supere el maximo."""
-	
+	if ya_compradas + cantidad > MAX_ENTRADAS:
+		raise ValueError(f"El maximo es de {MAX_ENTRADAS} entradas por fecha por usuario")
