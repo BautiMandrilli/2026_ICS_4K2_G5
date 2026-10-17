@@ -262,3 +262,16 @@ def test_rechaza_acumulado_mayor_a_diez():
 	# FAQ 27: 6 ya compradas + 5 nuevas supera el maximo de 10.
 	with pytest.raises(ValueError):
 		validar_acumulado(6, 5)
+
+
+@pytest.mark.parametrize("edad, esperado", [
+	(4, 5000),
+	(59, 10000),
+])
+def test_bordes_de_edad_en_pase_regular(edad, esperado):
+	# Bordes de los descuentos: 4 anios paga 50%, 59 anios paga completo.
+	assert calcular_total(1, "regular", [edad]) == esperado
+
+
+def test_descuento_del_cincuenta_por_ciento_en_pase_vip():
+	assert calcular_total(1, "vip", [10]) == 10000
