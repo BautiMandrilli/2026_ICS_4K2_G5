@@ -224,3 +224,28 @@ def test_rechaza_fecha_a_mas_de_un_mes():
 
 	with pytest.raises(ValueError):
 		validar_fecha_visita(mas_de_un_mes, {mas_de_un_mes}, ahora)
+
+
+def test_permite_compra_del_mismo_dia_a_las_1730():
+	# Regla del parque: la compra del mismo dia se permite hasta las 17:30.
+	ahora = datetime(2026, 10, 14, 17, 30)
+	hoy = date(2026, 10, 14)
+
+	validar_fecha_visita(hoy, {hoy}, ahora)
+
+
+def test_rechaza_compra_del_mismo_dia_a_las_1731():
+	# Regla del parque: despues de las 17:30 no se vende para el mismo dia.
+	ahora = datetime(2026, 10, 14, 17, 31)
+	hoy = date(2026, 10, 14)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(hoy, {hoy}, ahora)
+
+
+def test_permite_compra_para_dia_futuro_despues_de_las_1730():
+	# El limite horario aplica solo a la visita del mismo dia.
+	ahora = datetime(2026, 10, 14, 23, 0)
+	manana = date(2026, 10, 15)
+
+	validar_fecha_visita(manana, {manana}, ahora)
