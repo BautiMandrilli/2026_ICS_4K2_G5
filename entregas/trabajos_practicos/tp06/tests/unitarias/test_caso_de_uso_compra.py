@@ -48,3 +48,83 @@ def test_rechaza_compra_si_el_acumulado_de_la_fecha_supera_diez():
 
     with pytest.raises(ValueError):
         comprar_entradas(cantidad=5, edades=[25] * 5, **datos)
+
+def test_rechaza_compra_sin_forma_de_pago():
+    with pytest.raises(ValueError):
+        comprar_entradas(
+            usuario="visitante_registrado",
+            fecha_visita=date(2026, 10, 20),
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
+
+
+def test_rechaza_compra_con_parque_cerrado():
+    lunes = date(2026, 10, 19)
+
+    with pytest.raises(ValueError):
+        comprar_entradas(
+            usuario="visitante_registrado",
+            fecha_visita=lunes,
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="efectivo",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
+
+
+def test_rechaza_compra_de_usuario_no_registrado():
+    with pytest.raises(PermissionError):
+        comprar_entradas(
+            usuario=None,
+            fecha_visita=date(2026, 10, 20),
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="efectivo",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
+
+def test_rechaza_compra_sin_forma_de_pago():
+    with pytest.raises(ValueError):
+        comprar_entradas(
+            usuario="visitante_registrado",
+            fecha_visita=date(2026, 10, 20),
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
+
+
+def test_rechaza_compra_con_parque_cerrado():
+    lunes = date(2026, 10, 19)
+
+    with pytest.raises(ValueError):
+        comprar_entradas(
+            usuario="visitante_registrado",
+            fecha_visita=lunes,
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="efectivo",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
+
+
+def test_rechaza_compra_de_usuario_no_registrado():
+    with pytest.raises(PermissionError):
+        comprar_entradas(
+            usuario=None,
+            fecha_visita=date(2026, 10, 20),
+            cantidad=1,
+            edades=[25],
+            tipo_de_pase="regular",
+            forma_de_pago="efectivo",
+            ahora=datetime(2026, 10, 14, 10, 0),
+        )
