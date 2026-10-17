@@ -4,6 +4,7 @@ from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 
 MESES_MAXIMOS_ANTICIPACION = 1
+HORA_LIMITE_COMPRA_MISMO_DIA = time(17, 30)
 
 def calcular_total(
 	cantidad: int,
@@ -69,7 +70,8 @@ def validar_fecha_visita(
 		limite = fecha_actual + relativedelta(months=MESES_MAXIMOS_ANTICIPACION)
 		if fecha_visita > limite:
 			raise ValueError("La fecha no puede superar un mes de anticipacion")
-	if ahora is not None and fecha_visita == fecha_actual and ahora.time() > time(17, 30):
+	es_visita_de_hoy = fecha_visita == fecha_actual
+	if ahora is not None and es_visita_de_hoy and ahora.time() > HORA_LIMITE_COMPRA_MISMO_DIA:
 		raise ValueError("La compra de entrada para el mismo día se cierra a las 17:30")
 	if dias_abiertos is not None and fecha_visita not in dias_abiertos:
 		raise ValueError("El parque esta cerrado en la fecha seleccionada")
