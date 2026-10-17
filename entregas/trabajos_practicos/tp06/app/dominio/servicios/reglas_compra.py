@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
 MESES_MAXIMOS_ANTICIPACION = 1
@@ -59,10 +59,11 @@ def validar_edades(cantidad: int, edades: list[int]) -> None:
 def validar_fecha_visita(
 	fecha_visita: date,
 	dias_abiertos: set[date] | None = None,
-	fecha_actual: date | None = None,
+	ahora: datetime | None = None,
 ) -> None:
 	"""Valida que la fecha sea actual o futura y corresponda a una apertura."""
-	if fecha_actual is not None and fecha_visita < fecha_actual:
+	fecha_actual = ahora.date() if ahora is not None else None
+	if ahora is not None and fecha_visita < fecha_actual:
 		raise ValueError("La fecha no puede ser anterior al dia actual")
 	if fecha_actual is not None:
 		limite = fecha_actual + relativedelta(months=MESES_MAXIMOS_ANTICIPACION)

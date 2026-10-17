@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 import logging
 
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
@@ -26,7 +26,7 @@ def comprar_entradas(
 	tipo_de_pase: str,
 	forma_de_pago: str,
 	dias_abiertos: set[date] | None = None,
-	fecha_actual: date | None = None,
+	ahora: datetime | None = None,
 	email: str | None = None,
 	notificador: NotificadorCompra | None = None,
 ) -> dict:
@@ -39,7 +39,7 @@ def comprar_entradas(
 	validar_fecha_visita(
 		fecha_visita,
 		dias_abiertos,
-		fecha_actual or date.today(),
+		ahora or datetime.now(),
 	)
 	validar_tipo_pase(tipo_de_pase)
 	validar_forma_pago(forma_de_pago)

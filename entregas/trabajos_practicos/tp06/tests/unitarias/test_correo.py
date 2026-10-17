@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from unittest.mock import Mock, patch
 import os
 import smtplib
@@ -20,7 +20,7 @@ def datos():
     return dict(
         usuario="visitante", fecha_visita=date(2030, 10, 15), cantidad=2,
         edades=[25, 30], tipo_de_pase="regular", forma_de_pago="efectivo",
-        fecha_actual=date(2030, 10, 14),
+        ahora=datetime(2030, 10, 14, 10, 0),
     )
 
 

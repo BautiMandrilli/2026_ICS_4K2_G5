@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 import pytest
 
@@ -48,20 +48,20 @@ def test_rechaza_fecha_anterior_al_dia_actual():
 	fecha_anterior = hoy - timedelta(days=1)
 
 	with pytest.raises(ValueError):
-		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, hoy)
+		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, datetime.now())
 
 
 def test_permite_fecha_actual_si_el_parque_esta_abierto():
 	hoy = date.today()
 
-	validar_fecha_visita(hoy, {hoy}, hoy)
+	validar_fecha_visita(hoy, {hoy}, datetime.now())
 
 
 def test_permite_fecha_futura_si_el_parque_esta_abierto():
 	hoy = date.today()
 	fecha_futura = hoy + timedelta(days=2)
 
-	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, hoy)
+	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, datetime.now())
 
 
 def test_rechaza_visita_un_lunes():
@@ -210,15 +210,17 @@ def test_permite_edad_cero():
 
 
 def test_permite_fecha_a_exactamente_un_mes():
-	hoy = date (2026,10,16)
+	# Regla del parque: se puede comprar con hasta un mes de anticipacion.
+	ahora = datetime (2026,10,16, 10, 0)
 	un_mes_despues = date(2026,11,16)
 
-	validar_fecha_visita(un_mes_despues,  {un_mes_despues}, hoy)
+	validar_fecha_visita(un_mes_despues,  {un_mes_despues}, ahora)
 
 
 def test_rechaza_fecha_a_mas_de_un_mes():
-	hoy = date(2026, 10, 16)
+	# Regla del parque: no se puede comprar con mas de un mes de anticipacion.
+	ahora = datetime (2026,10,16, 10, 0)
 	mas_de_un_mes = date(2026, 11, 17)
 
 	with pytest.raises(ValueError):
-		validar_fecha_visita(mas_de_un_mes, {mas_de_un_mes}, hoy)
+		validar_fecha_visita(mas_de_un_mes, {mas_de_un_mes}, ahora)

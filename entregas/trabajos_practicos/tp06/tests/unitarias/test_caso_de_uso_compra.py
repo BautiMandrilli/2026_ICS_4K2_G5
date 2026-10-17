@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 import pytest
 
@@ -13,7 +13,7 @@ def test_confirma_una_compra_valida():
         edades=[25, 30],
         tipo_de_pase="regular",
         forma_de_pago="efectivo",
-        fecha_actual=date(2026, 10, 14),
+        ahora=datetime(2026, 10, 14, 10, 0),
     )
 
     assert resultado["estado"] == "confirmada"
@@ -30,5 +30,5 @@ def test_rechaza_compra_con_mas_de_diez_entradas():
             edades=[25] * 11,
             tipo_de_pase="regular",
             forma_de_pago="efectivo",
-            fecha_actual=date(2026, 10, 14),
+            ahora=datetime(2026, 10, 14, 10, 0),
         )
