@@ -50,6 +50,7 @@ def procesar_compra(
 	forma_de_pago: str = Form(...),
 	email: EmailStr = Form(...),
 	notificador: NotificadorCompra | None = Depends(notificador_compra),
+	repositorio: RepositorioComprasEnMemoria = Depends(repositorio_compras),
 	usuario: dict = Depends(usuario_actual),
 ):
 	try:
@@ -66,6 +67,7 @@ def procesar_compra(
 			forma_de_pago=forma_de_pago,
 			email=str(email),
 			notificador=notificador,
+			repositorio=repositorio,
 		)
 		error = None
 	except (PermissionError, ValueError) as excepcion:
