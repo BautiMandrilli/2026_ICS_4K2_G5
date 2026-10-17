@@ -9,6 +9,7 @@ from app.dominio.servicios.reglas_compra import (
 	validar_fecha_visita,
 	validar_forma_pago,
 	validar_tipo_pase,
+	validar_acumulado,
 )
 
 
@@ -250,3 +251,14 @@ def test_permite_compra_para_dia_futuro_despues_de_las_1730():
 	manana = date(2026, 10, 15)
 
 	validar_fecha_visita(manana, {manana}, ahora)
+
+
+def test_permite_acumulado_exactamente_en_diez():
+	# FAQ 27: hasta 10 entradas por fecha, sumando todas las compras.
+	validar_acumulado(6, 4)
+
+
+def test_rechaza_acumulado_mayor_a_diez():
+	# FAQ 27: 6 ya compradas + 5 nuevas supera el maximo de 10.
+	with pytest.raises(ValueError):
+		validar_acumulado(6, 5)

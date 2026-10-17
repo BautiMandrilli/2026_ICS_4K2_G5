@@ -90,3 +90,8 @@ def validar_forma_pago(forma_de_pago: str) -> None:
 	"""Valida que el pago sea en efectivo, tarjeta o Mercado Pago."""
 	if forma_de_pago not in {"efectivo", "tarjeta", "mercadopago"}:
 		raise ValueError("La forma de pago no es valida")
+
+
+def validar_acumulado(ya_compradas: int, cantidad: int) -> None:
+	"""Valida que el total de entradas de la fecha no supere el maximo."""
+	
