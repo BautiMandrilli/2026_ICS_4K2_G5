@@ -11,7 +11,8 @@ from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
 from app.aplicacion.notificaciones import ErrorNotificacion
 from app.infraestructura.base_de_datos import usuarios as base_de_datos
 from app.infraestructura.notificaciones import correo
-from app.interfaces.rutas.compras import notificador_compra
+from app.interfaces.rutas.compras import notificador_compra, repositorio_compras
+from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
 from app.main import app
 
 
@@ -192,3 +193,19 @@ def test_ruta_sin_configuracion_confirma_con_aviso(cliente):
     assert respuesta.status_code == 200
     assert "Compra confirmada" in respuesta.text
     assert "no hace falta repetir la compra" in respuesta.text
+
+
+def test_ruta_rechaza_compra_si_el_acumulado_supera_diez(cliente):
+    client, _ = cliente
+    repositorio = RepositorioComprasEnMemoria()
+    app.dependency_overrides[repositorio_compras] = lambda: repositorio
+
+    primera = client.post(
+        "/compras", data={**formulario(), "cantidad": "6", "edades": ["25"] * 6}
+    )
+    segunda = client.post(
+        "/compras", data={**formulario(), "cantidad": "5", "edades": ["25"] * 5}
+    )
+
+    assert primera.status_code == 200
+    assert segunda.status_code == 400

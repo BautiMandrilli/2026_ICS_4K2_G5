@@ -12,11 +12,15 @@ from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
 from app.infraestructura.autenticacion import usuario_actual, usuario_actual_opcional
 from app.infraestructura.notificaciones.correo import obtener_notificador
-
+from app.infraestructura.base_de_datos.compras import RepositorioComprasEnMemoria
 
 router = APIRouter()
 templates = Jinja2Templates(directory=Path(__file__).parents[1] / "plantillas")
+_repositorio_compras = RepositorioComprasEnMemoria()
 
+
+def repositorio_compras() -> RepositorioComprasEnMemoria:
+	return _repositorio_compras
 
 def notificador_compra() -> NotificadorCompra | None:
 	try:
