@@ -10,13 +10,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <link rel="icon" type="image/png" sizes="512x512" href="/static/img/favicon-eco-harmony.png">
     <link rel="stylesheet" href="/static/css/app.css">
 </head>
 <body>
     <header class="encabezado">
         <a class="marca-logo" href="/">
-            <span class="marca-logo__imagen" aria-label="Espacio reservado para el logo">LOGO</span>
-            <span>EcoHarmony Park</span>
+            <img
+                class="marca-logo__imagen"
+                src="/static/img/eco-harmony-park.png"
+                alt="Logo de EcoHarmony Park"
+                width="96"
+                height="96"
+            >
         </a>
         {% if usuario %}
         <div class="sesion-activa">
