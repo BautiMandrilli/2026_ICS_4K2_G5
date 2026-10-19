@@ -30,9 +30,7 @@
     <p class="nota">Completá los datos de tu visita.</p>
 
     <form class="formulario" method="post" action="/compras">
-        {% if error %}
-        <p class="mensaje-error">{{ error }}</p>
-        {% endif %}
+        <p id="mensaje-error" class="mensaje-error" {% if not error %}hidden{% endif %}>{{ error or "" }}</p>
 
         <label class="campo" for="email">
             Email para recibir la confirmación
@@ -68,8 +66,7 @@
             <select id="forma-pago" name="forma_de_pago" required>
                 <option value="">Seleccionar</option>
                 <option value="efectivo">Efectivo en boleteria</option>
-                <option value="tarjeta">Tarjeta</option>
-                <option value="mercadopago">Mercado Pago</option>
+                <option value="mercadopago">Tarjeta de crédito</option>
             </select>
         </label>
 
@@ -91,11 +88,12 @@
         <div id="paso-spinner" class="paso-pago" hidden>
             <div class="spinner-pago" aria-hidden="true"></div>
             <p class="nota">Procesando el pago…</p>
+            <button type="button" id="boton-cancelar-pago">Cancelar</button>
         </div>
     </div>
 </dialog>
 
 {% if not resultado %}
-<script src="/static/js/compra.js"></script>
+<script src="/static/js/compra.js?v=2"></script>
 {% endif %}
 {% endblock %}
