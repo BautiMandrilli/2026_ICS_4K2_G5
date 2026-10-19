@@ -30,17 +30,22 @@ a {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
-    padding: 1rem max(1rem, calc((100% - 980px) / 2));
-    background: var(--verde-oscuro);
-    color: var(--blanco);
+    padding: 0.5rem max(1rem, calc((100% - 980px) / 2));
+    border-bottom: 1px solid rgba(56, 102, 65, 0.12);
+    background: var(--blanco);
+    color: var(--verde-oscuro);
 }
 
 .sesion-activa {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
     gap: 0.75rem;
-    color: var(--blanco);
+    max-width: 100%;
+    color: var(--verde-oscuro);
     font-size: 0.9rem;
+    overflow-wrap: anywhere;
 }
 
 .sesion-activa form {
@@ -49,39 +54,31 @@ a {
 
 .boton-sesion {
     padding: 0.5rem 0.75rem;
-    border: 1px solid var(--verde-claro);
+    border: 1px solid var(--verde);
     border-radius: 6px;
-    background: transparent;
-    color: var(--blanco);
+    background: var(--blanco);
+    color: var(--verde-oscuro);
     cursor: pointer;
     font: inherit;
 }
 
 .boton-sesion:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: var(--crema);
 }
 
 .marca-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    min-height: 48px;
-    color: var(--blanco);
-    font-size: 1.1rem;
-    font-weight: 900;
+    display: block;
+    flex: 0 0 auto;
+    width: clamp(76px, 10vw, 96px);
+    aspect-ratio: 1;
     text-decoration: none;
 }
 
 .marca-logo__imagen {
-    display: grid;
-    width: 48px;
-    height: 48px;
-    place-items: center;
-    border: 2px dashed var(--verde-claro);
-    border-radius: 50%;
-    color: var(--verde-claro);
-    font-size: 0.7rem;
-    text-align: center;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .contenedor {
@@ -256,6 +253,23 @@ h2 {
 .enlace-sesion {
     margin: 1.25rem 0 0;
     text-align: center;
+}
+
+@media (max-width: 480px) {
+    .encabezado {
+        gap: 0.5rem;
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+    }
+
+    .marca-logo {
+        width: 76px;
+    }
+
+    .sesion-activa {
+        gap: 0.5rem;
+        font-size: 0.8rem;
+    }
 }
 
 .modal-pago {
