@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 import pytest
 
@@ -9,6 +9,7 @@ from app.dominio.servicios.reglas_compra import (
 	validar_fecha_visita,
 	validar_forma_pago,
 	validar_tipo_pase,
+	validar_acumulado,
 )
 
 
@@ -48,20 +49,21 @@ def test_rechaza_fecha_anterior_al_dia_actual():
 	fecha_anterior = hoy - timedelta(days=1)
 
 	with pytest.raises(ValueError):
-		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, hoy)
+		validar_fecha_visita(fecha_anterior, {fecha_anterior, hoy}, datetime.now())
 
 
 def test_permite_fecha_actual_si_el_parque_esta_abierto():
-	hoy = date.today()
+	ahora = datetime(2026, 10, 16, 10, 0)
+	hoy = ahora.date()
 
-	validar_fecha_visita(hoy, {hoy}, hoy)
+	validar_fecha_visita(hoy, {hoy}, ahora)
 
 
 def test_permite_fecha_futura_si_el_parque_esta_abierto():
 	hoy = date.today()
 	fecha_futura = hoy + timedelta(days=2)
 
-	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, hoy)
+	validar_fecha_visita(fecha_futura, {hoy, fecha_futura}, datetime.now())
 
 
 def test_rechaza_visita_un_lunes():
@@ -207,3 +209,69 @@ def test_rechaza_edad_mayor_a_120():
 
 def test_permite_edad_cero():
 	validar_edades(1, [0])
+
+
+def test_permite_fecha_a_exactamente_un_mes():
+	# Regla del parque: se puede comprar con hasta un mes de anticipacion.
+	ahora = datetime (2026,10,16, 10, 0)
+	un_mes_despues = date(2026,11,16)
+
+	validar_fecha_visita(un_mes_despues,  {un_mes_despues}, ahora)
+
+
+def test_rechaza_fecha_a_mas_de_un_mes():
+	# Regla del parque: no se puede comprar con mas de un mes de anticipacion.
+	ahora = datetime (2026,10,16, 10, 0)
+	mas_de_un_mes = date(2026, 11, 17)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(mas_de_un_mes, {mas_de_un_mes}, ahora)
+
+
+def test_permite_compra_del_mismo_dia_a_las_1730():
+	# Regla del parque: la compra del mismo dia se permite hasta las 17:30.
+	ahora = datetime(2026, 10, 14, 17, 30)
+	hoy = date(2026, 10, 14)
+
+	validar_fecha_visita(hoy, {hoy}, ahora)
+
+
+def test_rechaza_compra_del_mismo_dia_a_las_1731():
+	# Regla del parque: despues de las 17:30 no se vende para el mismo dia.
+	ahora = datetime(2026, 10, 14, 17, 31)
+	hoy = date(2026, 10, 14)
+
+	with pytest.raises(ValueError):
+		validar_fecha_visita(hoy, {hoy}, ahora)
+
+
+def test_permite_compra_para_dia_futuro_despues_de_las_1730():
+	# El limite horario aplica solo a la visita del mismo dia.
+	ahora = datetime(2026, 10, 14, 23, 0)
+	manana = date(2026, 10, 15)
+
+	validar_fecha_visita(manana, {manana}, ahora)
+
+
+def test_permite_acumulado_exactamente_en_diez():
+	# FAQ 27: hasta 10 entradas por fecha, sumando todas las compras.
+	validar_acumulado(6, 4)
+
+
+def test_rechaza_acumulado_mayor_a_diez():
+	# FAQ 27: 6 ya compradas + 5 nuevas supera el maximo de 10.
+	with pytest.raises(ValueError):
+		validar_acumulado(6, 5)
+
+
+@pytest.mark.parametrize("edad, esperado", [
+	(4, 5000),
+	(59, 10000),
+])
+def test_bordes_de_edad_en_pase_regular(edad, esperado):
+	# Bordes de los descuentos: 4 anios paga 50%, 59 anios paga completo.
+	assert calcular_total(1, "regular", [edad]) == esperado
+
+
+def test_descuento_del_cincuenta_por_ciento_en_pase_vip():
+	assert calcular_total(1, "vip", [10]) == 10000
