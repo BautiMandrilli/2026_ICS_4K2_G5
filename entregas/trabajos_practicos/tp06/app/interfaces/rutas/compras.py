@@ -5,10 +5,10 @@ from datetime import date
 
 from fastapi import APIRouter, Depends, Form, Request
 from pydantic import EmailStr
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas
+from app.aplicacion.casos_de_uso.comprar_entradas import comprar_entradas, validar_compra
 from app.aplicacion.notificaciones import ErrorNotificacion, NotificadorCompra
 from app.infraestructura.autenticacion import usuario_actual, usuario_actual_opcional
 from app.infraestructura.notificaciones.correo import obtener_notificador
@@ -39,7 +39,31 @@ def mostrar_compra(request: Request, usuario: dict | None = Depends(usuario_actu
 		context={"usuario": usuario},
 	)
 
+@router.get("/mercadopago-simulado", response_class=HTMLResponse)
+def mercadopago_simulado(request: Request):
+	return templates.TemplateResponse(request=request, name="mercadopago.html")
 
+@router.post("/compras/validar")
+def validar_compra_previa(
+	fecha_visita: date = Form(...),
+	cantidad: int = Form(...),
+	edades: list[int] = Form(...),
+	tipo_de_pase: str = Form(...),
+	forma_de_pago: str = Form(...),
+	repositorio: RepositorioComprasEnMemoria = Depends(repositorio_compras),
+	usuario: dict = Depends(usuario_actual),
+):
+	try:
+		if forma_de_pago not in {"efectivo", "mercadopago"}:
+			raise ValueError("La forma de pago no es valida")
+		validar_compra(
+			usuario["email"], fecha_visita, cantidad, edades,
+			tipo_de_pase, forma_de_pago, repositorio=repositorio,
+		)
+	except (PermissionError, ValueError) as excepcion:
+		return JSONResponse({"error": str(excepcion)}, status_code=400)
+	return JSONResponse({"ok": True})
+	
 @router.post("/compras", response_class=HTMLResponse)
 def procesar_compra(
 	request: Request,
@@ -54,8 +78,7 @@ def procesar_compra(
 	usuario: dict = Depends(usuario_actual),
 ):
 	try:
-		if forma_de_pago == "tarjeta":
-			raise ValueError("El pago con tarjeta se implementara en la siguiente etapa")
+		
 		if forma_de_pago not in {"efectivo", "mercadopago"}:
 			raise ValueError("La forma de pago no es valida")
 		resultado = comprar_entradas(

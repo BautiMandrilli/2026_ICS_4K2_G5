@@ -7,9 +7,9 @@ const formaPagoSelect = document.querySelector("#forma-pago");
 const modalMercadoPago = document.querySelector("#modal-mercadopago");
 const pasoRedireccion = document.querySelector("#paso-redireccion");
 const pasoSpinner = document.querySelector("#paso-spinner");
+const botonCancelarPago = document.querySelector("#boton-cancelar-pago");
 
-const URL_PAGO_MERCADOPAGO =
-    "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=eco-harmony-demo-expirado";
+const URL_PAGO_MERCADOPAGO = "/mercadopago-simulado";
 
 let pagoMercadoPagoListo = false;
 
@@ -101,20 +101,29 @@ function esperar(ms) {
 }
 
 async function iniciarPagoMercadoPago() {
+    localStorage.removeItem("pago_mp");
     mostrarPaso("redireccion");
     modalMercadoPago.showModal();
 
     await esperar(800);
-    window.open(URL_PAGO_MERCADOPAGO, "_blank", "noopener,noreferrer");
-    await esperar(4200);
-
+    window.open(URL_PAGO_MERCADOPAGO, "_blank");
     mostrarPaso("spinner");
-    await esperar(3000);
+}
 
+window.addEventListener("storage", (evento) => {
+    if (evento.key !== "pago_mp" || evento.newValue !== "ok") {
+        return;
+    }
+    localStorage.removeItem("pago_mp");
     pagoMercadoPagoListo = true;
     modalMercadoPago.close();
     formulario.requestSubmit();
+});
+
+if (botonCancelarPago) {
+    botonCancelarPago.addEventListener("click", () => modalMercadoPago.close());
 }
+
 
 cantidadInput.addEventListener("input", () => {
     const cantidad = Number.parseInt(cantidadInput.value, 10);
@@ -129,17 +138,50 @@ cantidadInput.addEventListener("input", () => {
 });
 fechaInput.addEventListener("input", validarFechaSeleccionada);
 fechaInput.addEventListener("change", validarFechaSeleccionada);
-formulario.addEventListener("submit", (evento) => {
+formulario.addEventListener("submit", async (evento) => {
     validarFechaSeleccionada();
 
+    // Si la fecha no es válida, frenamos todo
     if (!fechaInput.value) {
         evento.preventDefault();
         return;
     }
 
     if (formaPagoSelect.value === "mercadopago" && !pagoMercadoPagoListo) {
-        evento.preventDefault();
-        iniciarPagoMercadoPago();
+        evento.preventDefault(); 
+
+        const formData = new FormData(formulario);
+        try {
+            const respuesta = await fetch('/compras/validar', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (respuesta.ok) {
+                const datosCompra = {};
+                for (const [clave, valor] of formData.entries()) {
+                    if (!datosCompra[clave]) {
+                        datosCompra[clave] = [];
+                    }
+                    datosCompra[clave].push(valor);
+                }
+
+                sessionStorage.setItem("compra_pendiente", JSON.stringify(datosCompra));
+
+                iniciarPagoMercadoPago();
+            } else {
+                
+                const datosError = await respuesta.json();
+                const msjError = document.querySelector("#mensaje-error");
+                if (msjError) {
+                    msjError.textContent = datosError.error;
+                    msjError.hidden = false;
+                }
+            }
+        } catch (error) {
+            console.error("Error al validar la compra:", error);
+        }
     }
 });
-validarFechaSeleccionada();
+
+document.querySelector("#boton-cancelar-pago").addEventListener("click", () => modalMercadoPago.close());

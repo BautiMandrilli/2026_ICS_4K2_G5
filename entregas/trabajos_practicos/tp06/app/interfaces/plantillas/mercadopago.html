@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mercado Pago | Pagar con tarjeta</title>
+<style>
+    body { margin: 0; font-family: Lato, Arial, sans-serif; background: #ededed; color: #333; }
+    header { background: #ffe600; padding: 14px 20px; font-weight: 700; font-size: 1.1rem; color: #2d3277; }
+    main { max-width: 440px; margin: 20px auto; padding: 0 16px; }
+    .caja { background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15); margin-bottom: 16px; }
+    h1 { font-size: 1.2rem; margin: 0 0 12px; }
+    p { margin: 6px 0; }
+    label { display: block; font-size: 0.9rem; margin-top: 12px; }
+    input, select { width: 100%; box-sizing: border-box; padding: 10px; margin-top: 4px; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; background: #fff; }
+    #nombre { text-transform: uppercase; }
+    .fila { display: flex; gap: 12px; }
+    .fila label { flex: 1; }
+    .detalle { font-size: 0.9rem; color: #555; margin: 2px 0; }
+    .total { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 700; border-top: 1px solid #ddd; margin-top: 10px; padding-top: 10px; }
+    button { width: 100%; margin-top: 18px; padding: 12px; border: 0; border-radius: 6px; background: #3483fa; color: #fff; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: default; }
+    .error { color: #bc4749; font-size: 0.9rem; margin-top: 10px; }
+    .aviso { font-size: 0.8rem; color: #666; }
+    .exito { text-align: center; }
+    .tilde { font-size: 3rem; color: #00a650; }
+    [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header>Mercado Pago</header>
+<main>
+    <section id="sin-compra" class="caja" hidden>
+        <h1>No hay un pago pendiente</h1>
+        <p>Volvé a EcoHarmony Park para iniciar una compra.</p>
+        <button type="button" id="boton-inicio">Volver a EcoHarmony Park</button>
+    </section>
+
+    <section id="pago" hidden>
+        <div class="caja">
+            <h1>Resumen de tu compra</h1>
+            <p>EcoHarmony Park</p>
+            <p>Fecha de visita: <strong id="r-fecha"></strong></p>
+            <p>Entradas: <strong id="r-cantidad"></strong></p>
+            <p>Tipo de pase: <strong id="r-pase"></strong></p>
+            <div id="r-detalle"></div>
+            <div class="total"><span>Total a pagar</span><span id="r-total"></span></div>
+        </div>
+
+        <form id="form-pago" class="caja" novalidate>
+            <h1>Pagá con tarjeta de crédito</h1>
+            <label>Tarjeta
+                <select id="tarjeta">
+                    <option>Visa</option>
+                    <option>Mastercard</option>
+                    <option>American Express</option>
+                </select>
+            </label>
+            <label>Número de tarjeta
+                <input id="numero" inputmode="numeric" maxlength="23" placeholder="1234 5678 9012 3456" autocomplete="off">
+            </label>
+            <label>Nombre y apellido como figura en la tarjeta
+                <input id="nombre" placeholder="NOMBRE APELLIDO" autocomplete="off">
+            </label>
+            <div class="fila">
+                <label>Mes de vencimiento
+                    <select id="mes"></select>
+                </label>
+                <label>Año
+                    <select id="anio"></select>
+                </label>
+            </div>
+            <label>Código de seguridad
+                <input id="cvv" inputmode="numeric" maxlength="4" placeholder="123" autocomplete="off">
+            </label>
+            <p id="error" class="error" hidden></p>
+            <button type="submit" id="boton-pagar">Pagar</button>
+            <p class="aviso">Simulación para un trabajo práctico: no ingreses datos reales de tu tarjeta.</p>
+        </form>
+    </section>
+
+    <section id="exito" class="caja exito" hidden>
+        <div class="tilde">&#10003;</div>
+        <h1>¡Pago exitoso!</h1>
+        <p>Volviendo a EcoHarmony Park…</p>
+        <button type="button" id="boton-volver">Volver ahora</button>
+    </section>
+</main>
+
+<script>
+    const claveCompra = "compra_pendiente";
+    const bruto = sessionStorage.getItem(claveCompra);
+    const compra = bruto ? JSON.parse(bruto) : null;
+
+    const seccionSinCompra = document.querySelector("#sin-compra");
+    const seccionPago = document.querySelector("#pago");
+    const seccionExito = document.querySelector("#exito");
+    const formPago = document.querySelector("#form-pago");
+    const botonPagar = document.querySelector("#boton-pagar");
+    const mensajeError = document.querySelector("#error");
+    const campoNumero = document.querySelector("#numero");
+    const campoNombre = document.querySelector("#nombre");
+    const campoCvv = document.querySelector("#cvv");
+    const selectMes = document.querySelector("#mes");
+    const selectAnio = document.querySelector("#anio");
+
+    const LETRAS = "A-Za-zÁÉÍÓÚÜÑáéíóúüñ";
+    const PRECIOS = { regular: 10000, vip: 20000 };
+
+    function dinero(valor) {
+        return "$" + valor.toLocaleString("es-AR");
+    }
+
+    // Solo para mostrar el resumen. El total real lo calcula el servidor al confirmar.
+    function subtotal(edad, base) {
+        if (edad <= 3) return 0;
+        if (edad <= 15 || edad >= 60) return base / 2;
+        return base;
+    }
+
+    function cargarVencimiento() {
+        for (let mes = 1; mes <= 12; mes += 1) {
+            const opcion = document.createElement("option");
+            opcion.value = String(mes).padStart(2, "0");
+            opcion.textContent = opcion.value;
+            selectMes.appendChild(opcion);
+        }
+        const anioActual = new Date().getFullYear();
+        for (let anio = anioActual; anio <= anioActual + 10; anio += 1) {
+            const opcion = document.createElement("option");
+            opcion.value = String(anio);
+            opcion.textContent = String(anio);
+            selectAnio.appendChild(opcion);
+        }
+    }
+
+    function mostrarResumen() {
+        const edades = (compra.edades || []).map(Number);
+        const pase = compra.tipo_de_pase[0];
+        const base = PRECIOS[pase] || 0;
+        const detalle = document.querySelector("#r-detalle");
+        let total = 0;
+
+        edades.forEach((edad, indice) => {
+            const valor = subtotal(edad, base);
+            total += valor;
+            const linea = document.createElement("p");
+            linea.className = "detalle";
+            linea.textContent = "Visitante " + (indice + 1) + " (" + edad + " años): " + dinero(valor);
+            detalle.appendChild(linea);
+        });
+
+        document.querySelector("#r-fecha").textContent = compra.fecha_visita[0];
+        document.querySelector("#r-cantidad").textContent = compra.cantidad[0];
+        document.querySelector("#r-pase").textContent = pase === "vip" ? "VIP" : "Regular";
+        document.querySelector("#r-total").textContent = dinero(total);
+    }
+
+    function volverAEcoHarmony() {
+        sessionStorage.removeItem(claveCompra);
+        const formulario = document.createElement("form");
+        formulario.method = "post";
+        formulario.action = "/compras";
+        for (const [clave, valores] of Object.entries(compra)) {
+            for (const valor of valores) {
+                const campo = document.createElement("input");
+                campo.type = "hidden";
+                campo.name = clave;
+                campo.value = valor;
+                formulario.appendChild(campo);
+            }
+        }
+        document.body.appendChild(formulario);
+        formulario.submit();
+    }
+
+    function validar() {
+        const marca = document.querySelector("#tarjeta").value;
+        const numero = campoNumero.value.replace(/\s/g, "");
+        const reglas = {
+            "Visa": { patron: /^4\d{15}$/, cvv: 3 },
+            "Mastercard": { patron: /^(5[1-5]\d{14}|2(2[2-9]\d|[3-6]\d\d|7[01]\d|720)\d{12})$/, cvv: 3 },
+            "American Express": { patron: /^3[47]\d{13}$/, cvv: 4 },
+        };
+        const regla = reglas[marca];
+
+        if (!regla.patron.test(numero)) {
+            return "El número no corresponde a una tarjeta " + marca + ".";
+        }
+
+        const nombre = campoNombre.value.trim().replace(/\s+/g, " ");
+        const patronNombre = new RegExp("^[" + LETRAS + "'’-]{2,}( [" + LETRAS + "'’-]{2,})+$");
+        if (!patronNombre.test(nombre)) {
+            return "Ingresá nombre y apellido, solo con letras.";
+        }
+
+        const hoy = new Date();
+        const anio = Number(selectAnio.value);
+        const mes = Number(selectMes.value);
+        if (anio === hoy.getFullYear() && mes < hoy.getMonth() + 1) {
+            return "La tarjeta está vencida.";
+        }
+
+        if (campoCvv.value.length !== regla.cvv) {
+            return "El código de seguridad debe tener " + regla.cvv + " dígitos.";
+        }
+        return "";
+    }
+
+    campoNumero.addEventListener("input", () => {
+        const digitos = campoNumero.value.replace(/\D/g, "").slice(0, 19);
+        campoNumero.value = digitos.replace(/(.{4})/g, "$1 ").trim();
+    });
+    campoNombre.addEventListener("input", () => {
+        const permitido = new RegExp("[^" + LETRAS + "'’\\s-]", "g");
+        campoNombre.value = campoNombre.value.replace(permitido, "");
+    });
+    campoCvv.addEventListener("input", () => {
+        campoCvv.value = campoCvv.value.replace(/\D/g, "");
+    });
+
+    document.querySelector("#boton-inicio").addEventListener("click", () => {
+        window.location.href = "/";
+    });
+
+    if (!compra) {
+        seccionSinCompra.hidden = false;
+    } else {
+        seccionPago.hidden = false;
+        cargarVencimiento();
+        mostrarResumen();
+
+        formPago.addEventListener("submit", (evento) => {
+            evento.preventDefault();
+            const problema = validar();
+            if (problema) {
+                mensajeError.textContent = problema;
+                mensajeError.hidden = false;
+                return;
+            }
+            mensajeError.hidden = true;
+            botonPagar.disabled = true;
+            botonPagar.textContent = "Procesando el pago…";
+            setTimeout(() => {
+                seccionPago.hidden = true;
+                seccionExito.hidden = false;
+                setTimeout(volverAEcoHarmony, 2000);
+            }, 2000);
+        });
+
+        document.querySelector("#boton-volver").addEventListener("click", volverAEcoHarmony);
+    }
+</script>
+</body>
+</html>
