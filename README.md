@@ -106,6 +106,7 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 |--------------------|-----------------------|-----------------------------|
 | 2026-08-25 | Grupo 5 | Línea base del TP04: informe de SCM y estructura del repositorio. |
 | 2026-10-08 | Grupo 5 | Línea base del TP07: informe de actividad dinámica Scrum y dashboard. |
+| 2026-10-21 | Grupo 5 | Línea base del TP06: tp TDD informe de justificaciones de software. |
 
 
 
