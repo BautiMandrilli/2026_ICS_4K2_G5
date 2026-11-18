@@ -64,6 +64,11 @@ Contiene recursos de apoyo para el desarrollo práctico del curso. Incluye:
 - **`templates`**: Plantillas para trabajos o parciales.  
 - **`guias`**: Guías de ejercicios e instrucciones para trabajos prácticos y de investigación.  
 
+### `cronogramas`
+Contiene los cronogramas generales de clases proporcionados por la cátedra, organizados por año y curso.
+
+- [Cronograma propuesto de clases 2026 — 4K2](cronogramas/2026_4k2_cronograma_propuesto_de_clases.xlsx)
+
 ### `entregas`
 Contiene los entregables del grupo. Incluye:
 
@@ -85,6 +90,7 @@ A medida que vayamos avanzando en el transcurso de la materia iremos publicando 
 | Presentación de clase                                             | `<aaaa>_<nn>_<nombre_material>.<ext>`              | [Presentaciones](teorico/presentaciones)                                                                                                  |
 | Template para prácticos o parciales                               | `<aaaa>_<nombre_material>.<ext>`                   | [Templates](practico/templates)                                                                                                           |
 | Guía de ejercicios o trabajos                                     | `<aaaa>_<nombre_material>.<ext>`                   | [Guías](practico/guias)                                                                                                                   |
+| Cronograma de clases                                              | `<aaaa>_<curso>_<nombre_material>.<ext>`           | [Cronogramas](cronogramas)                                                                                                                |
 | Trabajo de investigación                                          | `ti<nn>_4k2_g5_<nombre_tema>_<nombre_tipo>.<ext>` | [Trabajos de investigación](entregas/trabajos_investigacion)                                                                              |
 | Trabajo práctico                                                  | `tp<nn>_4k2_g5_<nombre_tema>_<nombre_tipo>.<ext>` | [Trabajos prácticos](entregas/trabajos_practicos)                                                                                         |
 
@@ -116,6 +122,7 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 |---|---|
 | `<autor>` | Indica el apellido del autor del material, escrito en minúscula. Si hay varios autores, solo se utiliza el primero. Ejemplo: “Ingeniería de Software — Ian Somerville” se nombra como **somerville**. |
 | `<aaaa>` | Indica el año de publicación del material, en formato de cuatro dígitos. Ejemplo: **2025**. |
+| `<curso>` | Indica el curso al que corresponde el material, en minúscula y sin espacios. Ejemplo: **4k2**. |
 | `<nn>` | Indica el número asignado por la cátedra al material o tema, utilizando dos dígitos. En caso de existir varios materiales asociados al mismo número, se agrega un segundo identificador correlativo de dos dígitos separado por guion bajo. Ejemplo: **09_01, 09_02, 09_03**. |
 | `<nombre_material>` | Indica el nombre del material proporcionado por la cátedra, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Ingeniería de Software” se nombra como **ingenieria_de_software**. |
 | `<nombre_tema>` | Indica el tema específico del trabajo, en minúscula. Los espacios se reemplazan por guiones bajos. Ejemplo: “Design Thinking” se nombra como **design_thinking**. |
