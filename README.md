@@ -108,11 +108,13 @@ Esto significa que la línea se establecerá antes de la finalización de la fec
 
 ## Historial de marcado de líneas base
 
-| Fecha de Definición | Autor de la Definición | Descripción de la Línea Base |
-|--------------------|-----------------------|-----------------------------|
-| 2026-08-25 | Grupo 5 | Línea base del TP04: informe de SCM y estructura del repositorio. |
-| 2026-10-08 | Grupo 5 | Línea base del TP07: informe de actividad dinámica Scrum y dashboard. |
-| 2026-10-21 | Grupo 5 | Línea base del TP06: tp TDD informe de justificaciones de software. |
+Las líneas base se marcaron con etiquetas anotadas de Git. Cada etiqueta fija el commit indicado y puede consultarse en el repositorio.
+
+| Fecha de definición | Autor de la definición | Etiqueta de línea base | Commit fijado | Descripción de la línea base |
+|---------------------|------------------------|------------------------|---------------|------------------------------|
+| 2026-08-25 | Grupo 5 | [`linea_base_tp04`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp04) | [`9dfce56`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/9dfce56091b232af39bc87d97e14a3b76338895b) | TP04: informe de SCM y estructura del repositorio. |
+| 2026-10-08 | Grupo 5 | [`linea_base_tp07`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp07) | [`a5cce00`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/a5cce00f971eb6481a2a8ef1ed602c79394566e5) | TP07: informe de actividad dinámica Scrum y dashboard. |
+| 2026-10-21 | Grupo 5 | [`linea_base_tp06`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp06) | [`1836c14`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/1836c142257623be15b291db4d65ab9e3c952b6a) | TP06: informe de justificaciones de diseño de software. |
 
 
 
