@@ -116,6 +116,7 @@ Las líneas base se marcan con etiquetas anotadas de Git. Cada etiqueta fija una
 | 2026-10-08 | Grupo 5 | [`linea_base_tp07`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp07) | [`a5cce00`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/a5cce00f971eb6481a2a8ef1ed602c79394566e5) | TP07: informe de actividad dinámica Scrum y dashboard. |
 | 2026-10-21 | Grupo 5 | [`linea_base_tp06`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp06) | [`1836c14`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/1836c142257623be15b291db4d65ab9e3c952b6a) | TP06: informe de justificaciones de diseño de software. |
 | 2026-11-17 | Grupo 5 | [`linea_base_mediados_noviembre_2026`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_mediados_noviembre_2026) | [Ver versión](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_mediados_noviembre_2026) | Corte de mediados de noviembre: estructura, cronograma y entregables del grupo disponibles hasta la fecha. |
+| 2026-11-24 | Grupo 5 | [`linea_base_tp12`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/tree/linea_base_tp12) | [`7572174`](https://github.com/BautiMandrilli/2026_ICS_4K2_G5/commit/75721743678da02774633c3a6c8b6c47b4cee057) | TP12: informe de design thinking. |
 
 
 
